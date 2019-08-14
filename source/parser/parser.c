@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/24 21:23:07 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/08/14 19:23:10 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ static int			handle_commands(char **args,
 int					parse_ast_command(t_ast *ast, t_shell *shell,
 		int needfork)
 {
+	int		ret;
+
 	tilde_expansion(shell, ast->content);
 	env_expansion(shell, ast->content);
 	quote_removing(shell, ast->content);
@@ -97,14 +99,14 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 		if (needfork)
 		{
 			if (ft_exec(ast->content, &shell->env, 1) == -1)
-				return (0);
-			while (wait(0) == -1)
+				return (-1);
+			while (wait(&ret) == -1)
 				;
 		}
 		else if (ft_exec(ast->content, &shell->env, 0) == -1)
-			return (0);
+			return (-1);
 	}
-	return (1);
+	return (ret);
 }
 
 int					parse_ast(t_ast *ast, t_shell *shell, int needfork)
@@ -118,6 +120,16 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork)
 		if (parse_ast(ast->right, shell, 1))
 			;
 	}
+	else if (ast->type == OPERATOR && ft_strequ(ast->content, "&&"))
+	{
+		if (!parse_ast(ast->left, shell, 1))
+			parse_ast(ast->right, shell, 1);
+	}
+	else if (ast->type == OPERATOR && ft_strequ(ast->content, "||"))
+	{
+		if (parse_ast(ast->left, shell, 1))
+			parse_ast(ast->right, shell, 1);
+	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "|"))
 	{
 		if (!parse_ast_pipe(ast, shell))
@@ -126,8 +138,7 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork)
 	else if (ast->type == REDIRECTION &&
 			!parse_ast_redirection(ast, shell, needfork))
 		return (-1);
-	else if (ast->type == COMMAND &&
-			!parse_ast_command(ast, shell, needfork))
-		return (-1);
+	else if (ast->type == COMMAND)
+		return (parse_ast_command(ast, shell, needfork));
 	return (0);
 }

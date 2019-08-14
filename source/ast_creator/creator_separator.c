@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 16:35:41 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/14 18:52:45 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/08/14 19:22:30 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_ast				*create_separator_ast(int beg, int end,
 	lexer = shell->lexer;
 	ast = 0;
 	if ((pos = last_token_pos(lexer, beg, end, g_separator_op[0])) == -1)
-		return (create_separator_ast_pipe(beg, end, shell));
+		return (create_separator_ast_logical(beg, end, shell));
 	ast = (t_ast *)ft_memalloc(sizeof(t_ast));
 	ast->content = ft_strdup(((t_token *)lexer->tokens.elem[pos])->str);
 	ast->type = OPERATOR;

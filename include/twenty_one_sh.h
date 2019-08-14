@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/10/04 14:36:45 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/08/14 18:14:00 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 # include "ft_printf.h"
 
 # define AM_COMMANDS 7
-# define AM_OPERATORS 8
-# define AM_LEVELS 2
-# define AM_SEPARATOROP 2
+# define AM_OPERATORS 10
+# define AM_LEVELS 4
+# define AM_SEPARATOROP 3
 # define AM_IOFILEOP 7
 # define AM_HISTORY 1000
 # define AM_ESC 19

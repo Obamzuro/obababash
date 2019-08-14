@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/25 13:31:31 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/08/14 18:01:04 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ char		g_ascii_ignore_chars[AM_ASCII_IGNORE + 1] =
 	'\x4', '\n', 0
 };
 
-char *(g_operators[]) =
+char *(g_operators[AM_OPERATORS]) =
 {
-	">", ">&", ">>", "<", "<&", "<<", "|", ";"
+	"&&", "||", ">", ">&", ">>", "<", "<&", "<<", "|", ";"
 };
 
 char		**fill_env(void)

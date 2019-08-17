@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/14 18:14:00 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/08/17 18:04:01 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,28 @@
 # define ALTV "\xe2\x88\x9a"
 # define ALTQ "\xc5\x93"
 # define EOT "\x4"
+
+typedef struct		s_process
+{
+	struct s_process	*next;
+	pid_t				pid;
+	char				completed;
+	char				stopped;
+	int					status;
+}					t_process;
+
+typedef struct		s_job
+{
+	struct job		*next;
+	char			*command;
+	t_process		*first_process;
+	pid_t			pgid;
+	char			notified;
+	struct termios	tmodes;
+//	int stdin, stdout, stderr;
+}					t_job;
+
+t_job	*first_job = NULL;
 
 typedef enum		e_tokentype
 {
@@ -137,6 +159,8 @@ typedef struct		s_ast
 {
 	void				*content;
 	t_tokentype			type;
+	pid_t				pgid;
+	int					foreground;
 	struct s_ast		*left;
 	struct s_ast		*right;
 }					t_ast;
@@ -169,6 +193,7 @@ typedef struct		s_shell
 	t_lineeditor	lineeditor;
 	t_reading_mode	reading_mode;
 	t_ast			*ast;
+	pid_t			pgid;
 }					t_shell;
 
 char				**fill_env(void);

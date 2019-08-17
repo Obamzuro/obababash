@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/25 20:19:44 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/08/15 14:45:59 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ static void				preparation(t_shell *shell)
 {
 	struct sigaction		act;
 	extern struct termios	g_tty;
+	pid_t					shell_pgid;
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = int_handler;
 	term_associate();
-	tcgetattr(STDIN_FILENO, &g_tty);
 	if ((shell->initfd.fdin = dup(0)) == -1 ||
 		(shell->initfd.fdout = dup(1)) == -1 ||
 		(shell->initfd.fderr = dup(2)) == -1)
@@ -80,9 +80,24 @@ static void				preparation(t_shell *shell)
 	}
 	shell->lexer = (t_lexer *)malloc(sizeof(t_lexer));
 	ft_bzero(&shell->history, sizeof(shell->history));
-	signal(SIGTSTP, SIG_IGN);
+	while (tcgetpgrp(shell->initfd.fdin) != (shell_pgid = getpgrp()))
+		kill (-shell_pgid, SIGTTIN);
+//	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGSTOP, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGCHLD, SIG_IGN);
+//	signal(SIGSTOP, SIG_IGN);
+	shell_pgid = getpid();
+	shell->pgid = shell_pgid;
+	if (setpgid(shell_pgid, shell_pgid) < 0)
+	{
+		ft_fprintf(2, "21sh: Couldn't put shell in its own groupr\n");
+		exit(EXIT_FAILURE);
+	}
+	tcsetpgrp(shell->initfd.fdin, shell_pgid);
+	tcgetattr(STDIN_FILENO, &g_tty);
 	if (sigaction(SIGINT, &act, 0) == -1 ||
 		sigaction(SIGWINCH, &act, 0) == -1)
 	{

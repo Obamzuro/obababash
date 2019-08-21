@@ -13,7 +13,7 @@
 #include "twenty_one_sh.h"
 
 static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
-		int fdpipe[2], int is_out)
+		int fdpipe[2], int is_out, t_job *cur_job)
 {
 	pid_t	pid;
 	int		a;
@@ -32,13 +32,11 @@ static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
 	if (!pid)
 	{
 		pid = getpid();
-		if (!ast->pgid)
-		{
-			ast->pgid = pid;
-			side->pgid = pid;
-		}
-		setpgid(pid, ast->pgid);
-//		if (ast->foreground)
+		add_process_to_job(cur_job, pid);
+		if (!cur_job->pgid)
+			cur_job->pgid = pid;
+		setpgid(pid, cur_job->pgid);
+		if (cur_job->foreground)
 			tcsetpgrp(shell->initfd.fdin, ast->pgid);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
@@ -49,36 +47,34 @@ static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
 		close(fdpipe[a]);
 		dup2(fdpipe[b], b);
 		close(fdpipe[b]);
-		parse_ast(side, shell, 0);
+		parse_ast(side, shell, 0, cur_job);
 		exit(0);
 	}
 	else
 	{
-		if (!ast->pgid)
-		{
-			ast->pgid = pid;
-			side->pgid = pid;
-		}
-		setpgid(pid, ast->pgid);
+		add_process_to_job(cur_job, pid);
+		if (!cur_job->pgid)
+			cur_job->pgid = pid;
+		setpgid(pid, cur_job->pgid);
 	}
 	return (pid);
 }
 
 // TODO: Add foreground parameter
-int					parse_ast_pipe(t_ast *ast, t_shell *shell)
+int					parse_ast_pipe(t_ast *ast, t_shell *shell, t_job *cur_job)
 {
 	int			fdpipe[2];
 	pid_t		pid[2];
 
 	if (pipe(fdpipe) == -1)
-		return ((int)print_error_zero("21sh: pipe creating error"));
-	if ((pid[0] = parse_ast_pipe_child(ast, shell, fdpipe, 0)) == -1)
+		return ((int64_t)print_error_zero("21sh: pipe creating error"));
+	if ((pid[0] = parse_ast_pipe_child(ast, shell, fdpipe, 0, cur_job)) == -1)
 	{
 		close(fdpipe[0]);
 		close(fdpipe[1]);
 		return (0);
 	}
-	if ((pid[1] = parse_ast_pipe_child(ast, shell, fdpipe, 1)) == -1)
+	if ((pid[1] = parse_ast_pipe_child(ast, shell, fdpipe, 1, cur_job)) == -1)
 	{
 		close(fdpipe[0]);
 		close(fdpipe[1]);

@@ -87,7 +87,7 @@ static int			handle_commands(char **args,
 }
 
 int					parse_ast_command(t_ast *ast, t_shell *shell,
-		int needfork)
+		int needfork, t_job *cur_job)
 {
 	int		ret;
 
@@ -98,47 +98,52 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	{
 		if (needfork)
 		{
-			if (ft_exec(ast->content, &shell->env, 1) == -1)
+			if (ft_exec(ast->content, &shell->env, 1, cur_job) == -1)
 				return (-1);
 			while (wait(&ret) == -1)
 				;
 		}
-		else if (ft_exec(ast->content, &shell->env, 0) == -1)
+		else if (ft_exec(ast->content, &shell->env, 0, cur_job) == -1)
 			return (-1);
 	}
 	return (ret);
 }
 
-int					parse_ast(t_ast *ast, t_shell *shell, int needfork)
+int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
 {
 	if (!ast)
 		return (-1);
+	if (!cur_job)
+	{
+		cur_job = (t_job *)ft_memalloc(sizeof(t_job));
+	}
 	if (ast->type == OPERATOR && ft_strequ(ast->content, ";"))
 	{
-		if (parse_ast(ast->left, shell, 1))
+		if (parse_ast(ast->left, shell, 1, cur_job))
 			;
-		if (parse_ast(ast->right, shell, 1))
+		if (parse_ast(ast->right, shell, 1, NULL))
 			;
 	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "&&"))
 	{
-		if (!parse_ast(ast->left, shell, 1))
-			parse_ast(ast->right, shell, 1);
+		if (!parse_ast(ast->left, shell, 1, cur_job))
+			parse_ast(ast->right, shell, 1, NULL);
 	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "||"))
 	{
-		if (parse_ast(ast->left, shell, 1))
-			parse_ast(ast->right, shell, 1);
+		if (parse_ast(ast->left, shell, 1, cur_job))
+			parse_ast(ast->right, shell, 1, NULL);
 	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "|"))
 	{
-		if (!parse_ast_pipe(ast, shell))
+		if (!parse_ast_pipe(ast, shell, cur_job))
 			return (-1);
+		put_job_in_foreground(cur_job, 0)
 	}
 	else if (ast->type == REDIRECTION &&
-			!parse_ast_redirection(ast, shell, needfork))
+			!parse_ast_redirection(ast, shell, needfork, cur_job))
 		return (-1);
 	else if (ast->type == COMMAND)
-		return (parse_ast_command(ast, shell, needfork));
+		return (parse_ast_command(ast, shell, needfork, cur_job));
 	return (0);
 }

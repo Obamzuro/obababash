@@ -106,11 +106,14 @@ static void				preparation(t_shell *shell)
 	}
 }
 
+t_shell					*g_shell;
+
 int						main(void)
 {
 	char		*command;
 	t_shell		shell;
 
+	g_shell = &shell;
 	preparation(&shell);
 	shell.env = fill_env();
 	while (1)

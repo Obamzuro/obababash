@@ -84,13 +84,14 @@ static int		ft_exec_check_err(char **args, char *comm)
 	return (0);
 }
 
-static int		ft_exec_fork(char **args, char ***env, char *comm)
+static int		ft_exec_fork(char **args, char ***env, char *comm, t_job *cur_job)
 {
 	pid_t		process;
 
 	process = fork();
 	if (process == 0)
 	{
+		add_process_to_job(cur_job, getpid());
 		if (execve(comm, args, *env) == -1)
 		{
 			ft_fprintf(2, "21sh: File execution error: %s\n", comm);
@@ -102,10 +103,11 @@ static int		ft_exec_fork(char **args, char ***env, char *comm)
 		ft_fprintf(2, "21sh: Error creating a child thread\n");
 		return (-1);
 	}
+	add_process_to_job(cur_job, getpid());
 	return (0);
 }
 
-int				ft_exec(char **args, char ***env, int forkneed)
+int				ft_exec(char **args, char ***env, int forkneed, t_job *cur_job)
 {
 	char		*comm;
 	int			ret;
@@ -118,7 +120,7 @@ int				ft_exec(char **args, char ***env, int forkneed)
 	if (ft_exec_check_err(args, comm) == -1)
 		return (-1);
 	if (forkneed)
-		ret = ft_exec_fork(args, env, comm);
+		ret = ft_exec_fork(args, env, comm, cur_job);
 	else if ((ret = execve(comm, args, *env) == -1))
 		ft_fprintf(2, "21sh: File execution error: %s\n", comm);
 	if (comm != args[0])

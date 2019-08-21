@@ -72,12 +72,13 @@ typedef struct		s_process
 
 typedef struct		s_job
 {
-	struct job		*next;
-	char			*command;
+	struct s_job	*next;
+//	char			*command;
 	t_process		*first_process;
 	pid_t			pgid;
 	char			notified;
 	struct termios	tmodes;
+	int				foreground;
 //	int stdin, stdout, stderr;
 }					t_job;
 
@@ -195,6 +196,8 @@ typedef struct		s_shell
 	t_ast			*ast;
 	pid_t			pgid;
 }					t_shell;
+
+extern t_shell *g_shell;
 
 char				**fill_env(void);
 void				fill_commands(t_comm_corr *commands);

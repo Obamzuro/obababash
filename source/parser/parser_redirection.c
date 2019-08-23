@@ -56,7 +56,7 @@ static int					parse_ast_redirection_kernel_heredoc(t_ast *ast,
 }
 
 static int					parse_ast_redirection_kernel(t_ast *ast,
-		t_shell *shell, int fd, int rightfd)
+		t_shell *shell, int fd, int rightfd, t_job *cur_job)
 {
 	int		oldfd;
 	int		devnull;
@@ -75,7 +75,7 @@ static int					parse_ast_redirection_kernel(t_ast *ast,
 	}
 	else
 		dup2(rightfd, fd);
-	if (!parse_ast(ast->left, shell, 0))
+	if (!parse_ast(ast->left, shell, 0, cur_job))
 		return (0);
 	dup2(oldfd, fd);
 	close(oldfd);
@@ -83,7 +83,7 @@ static int					parse_ast_redirection_kernel(t_ast *ast,
 }
 
 static int					parse_ast_redirection_child(t_ast *ast,
-		t_shell *shell)
+		t_shell *shell, t_job *cur_job)
 {
 	int			fd;
 	int			rightfd;
@@ -96,13 +96,13 @@ static int					parse_ast_redirection_child(t_ast *ast,
 		fd = 0;
 	if ((rightfd = parse_ast_redirection_right(ast)) == -1)
 		return (0);
-	if (!parse_ast_redirection_kernel(ast, shell, fd, rightfd))
+	if (!parse_ast_redirection_kernel(ast, shell, fd, rightfd, cur_job))
 		return (0);
 	return (1);
 }
 
 int							parse_ast_redirection(t_ast *ast, t_shell *shell,
-		int needfork)
+		int needfork, t_job *cur_job)
 {
 	pid_t		pid;
 
@@ -116,7 +116,7 @@ int							parse_ast_redirection(t_ast *ast, t_shell *shell,
 		}
 		if (!pid)
 		{
-			if (!parse_ast_redirection_child(ast, shell))
+			if (!parse_ast_redirection_child(ast, shell, cur_job))
 				exit(1);
 		}
 		else if (needfork)
@@ -124,7 +124,7 @@ int							parse_ast_redirection(t_ast *ast, t_shell *shell,
 				;
 		return (1);
 	}
-	if (!parse_ast_redirection_child(ast, shell))
+	if (!parse_ast_redirection_child(ast, shell, cur_job))
 		return (0);
 	return (1);
 }

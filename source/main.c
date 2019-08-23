@@ -87,7 +87,7 @@ static void				preparation(t_shell *shell)
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
-	signal(SIGCHLD, SIG_IGN);
+//	signal(SIGCHLD, SIG_IGN);
 //	signal(SIGSTOP, SIG_IGN);
 	shell_pgid = getpid();
 	shell->pgid = shell_pgid;
@@ -107,6 +107,7 @@ static void				preparation(t_shell *shell)
 }
 
 t_shell					*g_shell;
+t_job	*first_job = NULL;
 
 int						main(void)
 {
@@ -128,7 +129,7 @@ int						main(void)
 			creating_ast(&shell))
 			continue;
 		change_termios(&shell.initfd, 1);
-		parse_ast(shell.ast, &shell, 1);
+		parse_ast(shell.ast, &shell, 1, NULL);
 		free_lexer(shell.lexer);
 		free_ast(shell.ast);
 	}

@@ -82,7 +82,7 @@ typedef struct		s_job
 //	int stdin, stdout, stderr;
 }					t_job;
 
-t_job	*first_job = NULL;
+extern t_job		*first_job;
 
 typedef enum		e_tokentype
 {
@@ -204,7 +204,7 @@ void				fill_commands(t_comm_corr *commands);
 
 void				change_dir(char **args, char ***env);
 void				ft_echo(char **args, char ***env);
-int					ft_exec(char **args, char ***env, int forkneed);
+int					ft_exec(char **args, char ***env, int forkneed, t_job *cur_job);
 void				ft_exit(char **args, char ***env);
 void				print_env(char **args, char ***env);
 void				print_pwd(char **args, char ***env);
@@ -269,10 +269,10 @@ int					env_expansion(t_shell *shell, char **args);
 int					quote_removing(t_shell *shell, char **args);
 
 int					free_ast(t_ast *ast);
-int					parse_ast(t_ast *ast, t_shell *shell, int needfork);
+int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job);
 int					parse_ast_redirection(t_ast *ast, t_shell *shell,
-		int needfork);
-int					parse_ast_pipe(t_ast *ast, t_shell *shell);
+		int needfork, t_job *cur_job);
+int					parse_ast_pipe(t_ast *ast, t_shell *shell, t_job *cur_job);
 
 void				free_lexer(t_lexer *lexer);
 int					lexer_creating(char *command, t_shell *shell);
@@ -325,4 +325,12 @@ void				print_buffer(t_lineeditor *lineeditor, t_history *history,
 		char *newbuf, int offset);
 int					ft_putc(int c);
 void				write_line(t_lineeditor *lineeditor);
+
+
+
+
+
+void		put_job_in_foreground(t_job *job, int cont);
+void		wait_for_job(t_job *job);
+void		add_process_to_job(t_job *job, pid_t pid);
 #endif

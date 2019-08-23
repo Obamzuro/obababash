@@ -116,6 +116,15 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
 	if (!cur_job)
 	{
 		cur_job = (t_job *)ft_memalloc(sizeof(t_job));
+		if (!first_job)
+			first_job = cur_job;
+		else
+		{
+			t_job *job = first_job;
+			while (job->next)
+				job = job->next;
+			job->next = cur_job;
+		}
 	}
 	if (ast->type == OPERATOR && ft_strequ(ast->content, ";"))
 	{
@@ -138,7 +147,7 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
 	{
 		if (!parse_ast_pipe(ast, shell, cur_job))
 			return (-1);
-		put_job_in_foreground(cur_job, 0)
+		put_job_in_foreground(cur_job, 0);
 	}
 	else if (ast->type == REDIRECTION &&
 			!parse_ast_redirection(ast, shell, needfork, cur_job))

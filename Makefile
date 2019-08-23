@@ -52,7 +52,7 @@ SRCNAME = main.c	\
 		  error.c\
 		  expansions.c\
 		  history.c\
-		  
+		  additional.c
 
 FLAGS = -g# -Wall -Wextra -Werror
 

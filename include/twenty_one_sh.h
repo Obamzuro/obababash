@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/17 18:04:01 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 19:18:00 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-# define AM_COMMANDS 7
-# define AM_OPERATORS 10
+# define AM_COMMANDS 10
+# define AM_OPERATORS 11
 # define AM_LEVELS 4
 # define AM_SEPARATOROP 3
 # define AM_IOFILEOP 7
@@ -73,7 +73,7 @@ typedef struct		s_process
 typedef struct		s_job
 {
 	struct s_job	*next;
-//	char			*command;
+	char			command[30];
 	t_process		*first_process;
 	pid_t			pgid;
 	char			notified;
@@ -197,6 +197,7 @@ typedef struct		s_shell
 	pid_t			pgid;
 }					t_shell;
 
+extern char		*last_command;
 extern t_shell *g_shell;
 
 char				**fill_env(void);
@@ -331,6 +332,16 @@ void				write_line(t_lineeditor *lineeditor);
 
 
 void		put_job_in_foreground(t_job *job, int cont);
+void		put_job_in_background(t_job *job, int cont);
 void		wait_for_job(t_job *job);
 void		add_process_to_job(t_job *job, pid_t pid);
+void		do_job_notification(void);
+t_ast		*create_background_ast(int beg, int end,
+		t_shell *shell);
+int			job_is_completed(t_job *j);
+int			job_is_stopped(t_job *j);
+
+void				ft_jobs(char **args, char ***env);
+void				ft_fg(char **args, char ***env);
+void				ft_bg(char **args, char ***env);
 #endif

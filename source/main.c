@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/15 14:45:59 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 19:02:46 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,13 @@ static char				*lineediting(t_shell *shell)
 	return (command);
 }
 
+char *last_command;
+
 static int				lexing(t_shell *shell, char *command)
 {
+	if (last_command)
+		free(last_command);
+	last_command = ft_strdup(command);
 	if (lexer_creating(command, shell))
 	{
 		free_lexer(shell->lexer);
@@ -53,7 +58,7 @@ static int				lexing(t_shell *shell, char *command)
 
 static int				creating_ast(t_shell *shell)
 {
-	if (!(shell->ast = create_separator_ast(0,
+	if (!(shell->ast = create_background_ast(0,
 					shell->lexer->tokens.len - 1, shell)))
 	{
 		free_lexer(shell->lexer);
@@ -121,6 +126,7 @@ int						main(void)
 	{
 		change_termios(&shell.initfd, 0);
 		ft_bzero(shell.lexer, sizeof(t_lexer));
+		do_job_notification();
 		ft_printf("\e[31m[%s]\x1b[0m\n", get_env("PWD", shell.env));
 		ft_printf("$> ");
 		shell.reading_mode = BASIC;

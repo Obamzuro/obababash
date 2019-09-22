@@ -6,7 +6,7 @@
 #    By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2018/10/04 15:33:59 by obamzuro         ###   ########.fr        #
+#    Updated: 2019/09/22 18:44:01 by obamzuro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCNAME = main.c	\
 		  msh/msh_signal_handler.c\
 		  msh/msh_unsetenv.c\
 		  msh/msh_replace_env_variable.c\
+		  msh/msh_jobs.c\
 		  lineeditor/le_input_command.c\
 		  lineeditor/le_input_command2.c\
 		  lineeditor/le_print.c\

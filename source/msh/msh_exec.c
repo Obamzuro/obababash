@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:33 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/24 13:12:08 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 18:11:53 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,39 @@ static int		ft_exec_check_err(char **args, char *comm)
 
 static int		ft_exec_fork(char **args, char ***env, char *comm, t_job *cur_job)
 {
-	pid_t		process;
+	pid_t		pid;
 
-	process = fork();
-	if (process == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		add_process_to_job(cur_job, getpid());
+		pid = getpid();
+		add_process_to_job(cur_job, pid);
+		if (!cur_job->pgid)
+			cur_job->pgid = pid;
+		setpgid(pid, cur_job->pgid);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
+		signal(SIGTTIN, SIG_DFL);
+		signal(SIGTTOU, SIG_DFL);
+		signal(SIGCHLD, SIG_DFL);
 		if (execve(comm, args, *env) == -1)
 		{
 			ft_fprintf(2, "21sh: File execution error: %s\n", comm);
 			return (-1);
 		}
 	}
-	else if (process < 0)
+	else if (pid < 0)
 	{
 		ft_fprintf(2, "21sh: Error creating a child thread\n");
 		return (-1);
 	}
-	add_process_to_job(cur_job, getpid());
+	add_process_to_job(cur_job, pid);
+	if (!cur_job->pgid)
+		cur_job->pgid = pid;
+	setpgid(pid, cur_job->pgid);
+	if (cur_job->foreground)
+		put_job_in_foreground(cur_job, 0);
 	return (0);
 }
 

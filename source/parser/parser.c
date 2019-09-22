@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/14 19:23:10 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 19:04:23 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,13 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 		{
 			if (ft_exec(ast->content, &shell->env, 1, cur_job) == -1)
 				return (-1);
-			while (wait(&ret) == -1)
-				;
+//			if (cur_job->foreground)
+//				while (wait(&ret) == -1)
+//					;
+//			else
+//			{
+//				cur_job->pgid = 
+//			}
 		}
 		else if (ft_exec(ast->content, &shell->env, 0, cur_job) == -1)
 			return (-1);
@@ -116,6 +121,8 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
 	if (!cur_job)
 	{
 		cur_job = (t_job *)ft_memalloc(sizeof(t_job));
+		ft_strncpy(cur_job->command, last_command, sizeof(cur_job->command) - 1);
+		cur_job->foreground = 1;
 		if (!first_job)
 			first_job = cur_job;
 		else
@@ -147,7 +154,14 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
 	{
 		if (!parse_ast_pipe(ast, shell, cur_job))
 			return (-1);
-		put_job_in_foreground(cur_job, 0);
+		if (needfork && cur_job->foreground)
+			put_job_in_foreground(cur_job, 0);
+	}
+	else if (ast->type == OPERATOR && ft_strequ(ast->content, "&"))
+	{
+		cur_job->foreground = 0;
+		if (!parse_ast(ast->left, shell, needfork, cur_job))
+			return (-1);
 	}
 	else if (ast->type == REDIRECTION &&
 			!parse_ast_redirection(ast, shell, needfork, cur_job))

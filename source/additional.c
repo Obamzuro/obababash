@@ -10,6 +10,14 @@ void		add_process_to_job(t_job *job, pid_t pid)
 	{
 		job->first_process = (t_process *)ft_memalloc(sizeof(t_process));
 		job->first_process->pid = pid;
+
+//		if (!job->pgid)
+//		{
+//			job->pgid = pid;
+//			setpgid(pid, job->pgid);
+//			tcsetpgrp(STDIN_FILENO, job->pgid);
+//		}
+
 		return ;
 	}
 	if (process->pid == pid)
@@ -22,6 +30,16 @@ void		add_process_to_job(t_job *job, pid_t pid)
 	}
 	process->next = (t_process *)ft_memalloc(sizeof(t_process));
 	process->next->pid = pid;
+	///////////////
+//	ft_printf("RAKDO %d", job->pgid);
+//	if (!job->pgid)
+//	{
+//		ft_printf("RAK");
+//		job->pgid = pid;
+//		setpgid(pid, job->pgid);
+//		tcsetpgrp(STDIN_FILENO, job->pgid);
+//	}
+//	//////////////////
 }
 
 int			mark_process_status(pid_t pid, int status)
@@ -55,7 +73,11 @@ int			mark_process_status(pid_t pid, int status)
 			j = j->next;
 		}
 	}
-	ft_fprintf(STDERR_FILENO, "No child process %d.\n", pid);
+//	else if (!pid)
+//		return (-1);
+//		????????????????
+	if (pid > 0)
+		ft_fprintf(STDERR_FILENO, "No child process %d.\n", pid);
 	return (-1);
 }
 
@@ -111,18 +133,32 @@ void		wait_for_job(t_job *job)
 	int		status;
 	pid_t	pid;
 
-	print_processes();
+//	print_processes();
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+			if (pid == -1)
+				perror("waitpid error: ");
 	while (!mark_process_status(pid, status) &&
 				!job_is_stopped(job) &&
 				!job_is_completed(job))
+	{
 			pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+			if (pid == -1)
+				perror("waitpid error: ");
+	}
+}
+
+void		put_job_in_background(t_job *job, int cont)
+{
+	if (cont)
+		if (kill(-job->pgid, SIGCONT) < 0)
+			perror("kill (SIGCONT)");
 }
 
 void		put_job_in_foreground(t_job *job, int cont)
 {
 	extern struct termios		g_tty;
 
+	// shell->initfd.in ???
 	tcsetpgrp(STDIN_FILENO, job->pgid);
 	if (cont)
 	{
@@ -134,4 +170,59 @@ void		put_job_in_foreground(t_job *job, int cont)
 	tcsetpgrp(STDIN_FILENO, g_shell->pgid);
 	tcgetattr(STDIN_FILENO, &job->tmodes);
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &g_tty);
+}
+
+static void	update_status(void)
+{
+	int		status;
+	pid_t	pid;
+
+	pid = waitpid(WAIT_ANY, &status, WUNTRACED | WNOHANG);
+	while (!mark_process_status(pid, status))
+		pid = waitpid(WAIT_ANY, &status, WUNTRACED | WNOHANG);
+}
+
+void		do_job_notification(void)
+{
+	t_job		*j;
+	t_job		*jlast;
+	t_job		*jnext;
+	t_process	*p;
+	t_process	*p2;
+
+	jlast = NULL;
+	j = first_job;
+//	print_processes();
+	update_status();
+	while (j)
+	{
+		jnext = j->next;
+		if (job_is_completed(j))
+		{
+			if (!j->foreground)
+				ft_fprintf(STDERR_FILENO, "%ld: completed\n", j->pgid ? j->pgid : (j->first_process ? j->first_process->pid : 0));
+			if (jlast)
+				jlast->next = jnext;
+			else
+				first_job = jnext;
+			p = j->first_process;
+			p2 = p;
+			while (p)
+			{
+				p2 = p->next;
+				free(p);
+				p = p2;
+			}
+			free(j);
+		}
+		else if (job_is_stopped(j) && !j->notified)
+		{
+			ft_fprintf(STDERR_FILENO, "%ld: stopped\n", j->pgid);
+			j->notified = 1;
+			jlast = j;
+		}
+		else
+			jlast = j;
+		j = jnext;
+	}
 }

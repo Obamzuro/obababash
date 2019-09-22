@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:46:18 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/15 14:46:24 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:44:16 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
 		if (!cur_job->pgid)
 			cur_job->pgid = pid;
 		setpgid(pid, cur_job->pgid);
-		if (cur_job->foreground)
-			tcsetpgrp(shell->initfd.fdin, ast->pgid);
+		///////////////
+//		if (cur_job->foreground)
+//			tcsetpgrp(shell->initfd.fdin, cur_job->pgid);
+//			//////////////////
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGTSTP, SIG_DFL);

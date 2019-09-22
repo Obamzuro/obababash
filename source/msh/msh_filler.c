@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/14 19:19:49 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 19:18:06 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ t_comm_corr g_commands[] =
 	{"setenv", set_env_comm},
 	{"unsetenv", unset_env},
 	{"echo", ft_echo},
-	{"exit", ft_exit}
+	{"exit", ft_exit},
+	{"jobs", ft_jobs},
+	{"fg", ft_fg},
+	{"bg", ft_bg}
 };
 
 t_esc_corr g_esc[] =
@@ -53,7 +56,7 @@ char		g_ascii_ignore_chars[AM_ASCII_IGNORE + 1] =
 
 char *(g_operators[AM_OPERATORS]) =
 {
-	"&&", "||", ">", ">&", ">>", "<", "<&", "<<", "|", ";"
+	"&", "&&", "||", ">", ">&", ">>", "<", "<&", "<<", "|", ";"
 };
 
 char		**fill_env(void)

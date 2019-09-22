@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 16:35:41 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/14 19:22:30 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:13:34 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char				*(g_separator_op[AM_LEVELS][AM_SEPARATOROP]) =
 	{ ";", NULL, NULL },
 	{ "|", NULL, NULL },
 	{ "&&", "||", NULL },
+	{ "&", NULL, NULL }
 };
 
 static t_ast		*create_separator_ast_pipe(int beg,
@@ -89,5 +90,29 @@ t_ast				*create_separator_ast(int beg, int end,
 	if (pos + 1 <= end && !(ast->right = create_separator_ast_logical(pos + 1,
 					end, shell)) && free_ast(ast))
 		return (0);
+	return (ast);
+}
+
+t_ast				*create_background_ast(int beg, int end,
+		t_shell *shell)
+{
+	int		pos;
+	t_ast	*ast;
+	t_lexer	*lexer;
+
+	lexer = shell->lexer;
+	ast = 0;
+	pos = last_token_pos(lexer, beg, end, g_separator_op[3]);
+	if (pos == -1)
+		return (create_separator_ast(beg, end, shell));
+	else if (pos != end || end == 0)
+	{
+		ft_fprintf(STDERR_FILENO, "Wrong location of [&] operator!\n");
+		return (0);
+	}
+	ast = (t_ast *)ft_memalloc(sizeof(t_ast));
+	ast->content = ft_strdup(((t_token *)lexer->tokens.elem[pos])->str);
+	ast->type = OPERATOR;
+	ast->left = create_separator_ast(beg, end, shell);
 	return (ast);
 }

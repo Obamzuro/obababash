@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/22 19:18:00 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/25 20:10:04 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ typedef enum		e_tokentype
 	COMMAND,
 	REDIRECTION,
 	USED,
-	ERROR
+	ERROR,
+	VARIABLE
 }					t_tokentype;
 
 typedef enum		e_reading_mode
@@ -156,6 +157,12 @@ typedef struct		s_binary_token
 	char	*right;
 }					t_binary_token;
 
+typedef struct		s_command_token
+{
+	char	**args;
+	char	**vars;
+}					t_command_token;
+
 typedef struct		s_ast
 {
 	void				*content;
@@ -187,6 +194,7 @@ typedef struct		s_esc_corr
 
 typedef struct		s_shell
 {
+	char			**internal;
 	char			**env;
 	t_initfd		initfd;
 	t_history		history;
@@ -200,17 +208,17 @@ typedef struct		s_shell
 extern char		*last_command;
 extern t_shell *g_shell;
 
-char				**fill_env(void);
+char				**fill_env(char **environ);
 void				fill_commands(t_comm_corr *commands);
 
-void				change_dir(char **args, char ***env);
-void				ft_echo(char **args, char ***env);
+void				change_dir(char **args, t_shell *shell);
+void				ft_echo(char **args, t_shell *shell);
 int					ft_exec(char **args, char ***env, int forkneed, t_job *cur_job);
 void				ft_exit(char **args, char ***env);
-void				print_env(char **args, char ***env);
-void				print_pwd(char **args, char ***env);
-void				set_env_comm(char **args, char ***env);
-void				unset_env(char **args, char ***env);
+//void				print_env(char **args, char ***env);
+void				print_pwd(char **args, t_shell *shell);
+//void				set_env_comm(char **args, char ***env);
+//void				unset_env(char **args, char ***env);
 void				set_env(char *key, char *value, char ***env);
 char				*get_env(char *key, char **env);
 void				int_handler(int sig);
@@ -341,7 +349,7 @@ t_ast		*create_background_ast(int beg, int end,
 int			job_is_completed(t_job *j);
 int			job_is_stopped(t_job *j);
 
-void				ft_jobs(char **args, char ***env);
-void				ft_fg(char **args, char ***env);
-void				ft_bg(char **args, char ***env);
+void				ft_jobs(char **args, t_shell *shell);
+void				ft_fg(char **args, t_shell *shell);
+void				ft_bg(char **args, t_shell *shell);
 #endif

@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:57:53 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/25 13:53:12 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/25 19:36:11 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int					lexing_handling_end(t_shell *shell, t_token *token,
 	tokens = &shell->lexer->tokens;
 	if (token && token->str)
 	{
-		token->type = WORD;
+		if (ft_strchr(token->str, '='))
+			token->type = VARIABLE;
+		else
+			token->type = WORD;
 		push_ftvector(tokens, token);
 	}
 	else if (!token && tokens->len > 0 &&
@@ -64,7 +67,12 @@ t_token				*lexing_handling_separator(t_lexer *lexer, t_token *token)
 	if (token && token->str)
 	{
 		if (token->type == UKNOWN)
-			token->type = WORD;
+		{
+			if (ft_strchr(token->str, '='))
+				token->type = VARIABLE;
+			else
+				token->type = WORD;
+		}
 		push_ftvector(&lexer->tokens, token);
 	}
 	token = NULL;

@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/22 19:02:46 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/25 19:15:35 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,13 @@ int						main(void)
 {
 	char		*command;
 	t_shell		shell;
+	extern char		**environ;
 
 	g_shell = &shell;
 	preparation(&shell);
-	shell.env = fill_env();
+	shell.env = fill_env(environ);
+	shell.internal = (char **)malloc(sizeof(char *));
+	shell.internal[0] = NULL;
 	while (1)
 	{
 		change_termios(&shell.initfd, 0);

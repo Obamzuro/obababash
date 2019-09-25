@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/22 19:18:06 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/25 19:15:34 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ char *(g_operators[AM_OPERATORS]) =
 	"&", "&&", "||", ">", ">&", ">>", "<", "<&", "<<", "|", ";"
 };
 
-char		**fill_env(void)
+char		**fill_env(char **environ)
 {
-	extern char		**environ;
 	char			**env;
 	int				count;
 	int				i;

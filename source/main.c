@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 14:59:19 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 15:47:47 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,23 @@ static int				creating_ast(t_shell *shell)
 	return (0);
 }
 
+static void				init_env(void)
+{
+	char	*value;
+	char	*tmp;
+
+	value = get_env("USER", g_shell->env);
+	if (value)
+	{
+		tmp = ft_strjoin("/User/", value);
+		set_env("HOME", tmp, &g_shell->env);
+		free(tmp);
+	}
+	tmp = getcwd(NULL, 0);
+	set_env("PWD", tmp, &g_shell->env);
+	free(tmp);
+}
+
 static void				preparation(t_shell *shell)
 {
 	struct sigaction		act;
@@ -125,6 +142,7 @@ int						main(void)
 	shell.env = fill_env(environ);
 	shell.internal = (char **)malloc(sizeof(char *));
 	shell.internal[0] = NULL;
+	init_env();
 	while (1)
 	{
 		change_termios(&shell.initfd, 0);

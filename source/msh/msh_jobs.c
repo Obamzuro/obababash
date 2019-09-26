@@ -6,13 +6,13 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:38:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/22 19:36:06 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 14:30:47 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void			ft_jobs(char **args, char ***env)
+void			ft_jobs(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 {
 	t_job		*j;
 	t_process	*p;
@@ -31,7 +31,7 @@ void			ft_jobs(char **args, char ***env)
 	}
 }
 
-void			ft_fg(char **args, char ***env)
+void			ft_fg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 {
 	t_process	*p;
 	t_job		*j;
@@ -70,7 +70,7 @@ void			ft_fg(char **args, char ***env)
 	put_job_in_foreground(j, 1);
 }
 
-void			ft_bg(char **args, char ***env)
+void			ft_bg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 {
 	t_process	*p;
 	t_job		*j;

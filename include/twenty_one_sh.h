@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/25 20:10:04 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 15:20:23 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-# define AM_COMMANDS 10
+# define AM_COMMANDS 9
 # define AM_OPERATORS 11
 # define AM_LEVELS 4
 # define AM_SEPARATOROP 3
@@ -178,20 +178,6 @@ typedef struct		s_lexer
 	t_ftvector	tokens;
 }					t_lexer;
 
-typedef struct		s_comm_corr
-{
-	char	*comm;
-	void	(*func)(char **, char ***);
-}					t_comm_corr;
-
-typedef struct		s_esc_corr
-{
-	char	*str;
-	void	(*func)(t_lineeditor *, t_history *);
-	int		is_printing : 1;
-	int		is_selecting : 1;
-}					t_esc_corr;
-
 typedef struct		s_shell
 {
 	char			**internal;
@@ -205,20 +191,44 @@ typedef struct		s_shell
 	pid_t			pgid;
 }					t_shell;
 
+typedef struct		s_comm_corr
+{
+	char	*comm;
+	void	(*func)(char **, char **, t_shell *);
+}					t_comm_corr;
+
+void				push_variables_into_env(t_shell *shell, char **args, char ***env, char ***dop_env);
+
+void				ft_exit(char **args, char **vars, t_shell *shell);
+void				ft_echo(char **args, char **vars, t_shell *shell);
+void				change_dir(char **args, char **vars, t_shell *shell);
+void				ft_jobs(char **args, char **vars, t_shell *shell);
+void				ft_fg(char **args, char **vars, t_shell *shell);
+void				ft_bg(char **args, char **vars, t_shell *shell);
+void				ft_export_comm(char **args, char **vars, t_shell *shell);
+void				ft_unset_comm(char **args, char **vars, t_shell *shell);
+void				ft_set_comm(char **args, char **vars, t_shell *shell);
+//void				print_pwd(char **args, char **vars, t_shell *shell);
+void				print_env(char **args, char ***env);
+//void				set_env_comm(char **args, char ***env);
+void				unset_env(char **args, char ***env);
+void				unset_env_kernel(char *arg, char ***env);
+
+typedef struct		s_esc_corr
+{
+	char	*str;
+	void	(*func)(t_lineeditor *, t_history *);
+	int		is_printing : 1;
+	int		is_selecting : 1;
+}					t_esc_corr;
+
 extern char		*last_command;
 extern t_shell *g_shell;
 
 char				**fill_env(char **environ);
 void				fill_commands(t_comm_corr *commands);
 
-void				change_dir(char **args, t_shell *shell);
-void				ft_echo(char **args, t_shell *shell);
 int					ft_exec(char **args, char ***env, int forkneed, t_job *cur_job);
-void				ft_exit(char **args, char ***env);
-//void				print_env(char **args, char ***env);
-void				print_pwd(char **args, t_shell *shell);
-//void				set_env_comm(char **args, char ***env);
-//void				unset_env(char **args, char ***env);
 void				set_env(char *key, char *value, char ***env);
 char				*get_env(char *key, char **env);
 void				int_handler(int sig);
@@ -349,7 +359,7 @@ t_ast		*create_background_ast(int beg, int end,
 int			job_is_completed(t_job *j);
 int			job_is_stopped(t_job *j);
 
-void				ft_jobs(char **args, t_shell *shell);
-void				ft_fg(char **args, t_shell *shell);
-void				ft_bg(char **args, t_shell *shell);
+int			set_env_check_existing(char *key, char *value, char **env);
+
+char		*get_envs(char *key, int amount_envs, ...);
 #endif

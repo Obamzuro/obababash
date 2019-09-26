@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/25 20:07:35 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 15:15:54 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int					free_ast(t_ast *ast)
 	return (1);
 }
 
-static int			handle_commands(char **args,
+static int			handle_commands(char **args, char **vars,
 		t_shell *shell)
 {
 	int					i;
@@ -81,7 +81,7 @@ static int			handle_commands(char **args,
 		if (!ft_strncmp(g_commands[i].comm, args[0],
 					ft_strlen(g_commands[i].comm) + 1))
 		{
-			g_commands[i].func(args, shell);
+			g_commands[i].func(args, vars, shell);
 			break ;
 		}
 	}
@@ -90,7 +90,7 @@ static int			handle_commands(char **args,
 	return (1);
 }
 
-void				push_variables_into_env(t_shell *shell, char **args, char ***env)
+void				push_variables_into_env(t_shell *shell, char **args, char ***env, char ***dop_env)
 {
 	int		i;
 	char	*key;
@@ -101,7 +101,12 @@ void				push_variables_into_env(t_shell *shell, char **args, char ***env)
 	{
 		key = ft_strsub(args[i], 0, ft_strchr(args[i], '=') - args[i]);
 		value = ft_strdup(ft_strchr(args[i], '=') + 1);
-		set_env(key, value, env);
+		if (dop_env && set_env_check_existing(key, value, *dop_env))
+			;
+		else
+			set_env(key, value, env);
+		free(key);
+		free(value);
 		++i;
 	}
 }
@@ -126,16 +131,17 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	quote_removing(shell, vars);
 	if (!args[0])
 	{
-		push_variables_into_env(shell, vars, &shell->internal);
+		push_variables_into_env(shell, vars, &shell->internal, &shell->env);
 		return (0);
 	}
-	push_variables_into_env(shell, shell->env, &vars);
+	push_variables_into_env(shell, shell->env, &vars, NULL);
+	((t_command_token *)ast->content)->vars = vars;
 //	get_child_variables(shell, &ast->content);
-	if (!handle_commands(ast->content, shell))
+	if (!handle_commands(args, vars, shell))
 	{
 		if (needfork)
 		{
-			if (ft_exec(ast->content, &vars, 1, cur_job) == -1)
+			if (ft_exec(args, &vars, 1, cur_job) == -1)
 				return (-1);
 //			if (cur_job->foreground)
 //				while (wait(&ret) == -1)
@@ -145,7 +151,7 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 //				cur_job->pgid = 
 //			}
 		}
-		else if (ft_exec(ast->content, &vars, 0, cur_job) == -1)
+		else if (ft_exec(args, &vars, 0, cur_job) == -1)
 			return (-1);
 	}
 	return (ret);

@@ -6,15 +6,15 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/05/23 15:04:58 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 14:30:32 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void		ft_exit(char **args, char ***env)
+void		ft_exit(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 {
 	args++;
-	env++;
+	shell++;
 	exit(0);
 }

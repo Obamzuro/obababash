@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:51 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/21 20:51:34 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 15:28:38 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,29 @@ char		*get_env(char *key, char **env)
 		++i;
 	}
 	return (0);
+}
+
+char		*get_envs(char *key, int amount_envs, ...)
+{
+	int			i;
+	va_list		ap;
+	char		**env;
+	char		*value;
+
+	va_start(ap, amount_envs);
+	i = 0;
+	while (i < amount_envs)
+	{
+		env = va_arg(ap, char **);
+		if ((value = get_env(key, env)))
+		{
+			va_end(ap);
+			return (value);
+		}
+		++i;
+	}
+	va_end(ap);
+	return (NULL);
 }
 
 void		print_env(char **args, char ***env)

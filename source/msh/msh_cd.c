@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:21 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/24 13:11:50 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 14:30:21 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,14 @@ static void			change_dir_two_args(char **args, char *pwd)
 	free(path);
 }
 
-void				change_dir(char **args, char ***env)
+void				change_dir(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 {
 	char			*oldpwd;
 	char			*pwd;
 	char			*home;
+	char			***env;
 
+	env = &shell->env;
 	oldpwd = getcwd(0, 0);
 	home = get_env("HOME", *env);
 	if (args[0] && args[1] && args[2] && args[3])

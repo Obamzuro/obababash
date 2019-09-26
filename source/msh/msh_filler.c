@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/25 19:15:34 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 13:50:50 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 t_comm_corr g_commands[] =
 {
-	{"pwd", print_pwd},
+//	{"pwd", print_pwd},
 	{"cd", change_dir},
-	{"env", print_env},
-	{"setenv", set_env_comm},
-	{"unsetenv", unset_env},
+	{"set", ft_set_comm},
+	{"export", ft_export_comm},
+	{"unset", ft_unset_comm},
+//	{"env", print_env},
+//	{"setenv", set_env_comm},
+//	{"unsetenv", unset_env},
 	{"echo", ft_echo},
 	{"exit", ft_exit},
 	{"jobs", ft_jobs},

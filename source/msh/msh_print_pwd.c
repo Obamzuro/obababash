@@ -6,13 +6,13 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:58 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/05/22 19:43:12 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 14:31:06 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void			print_pwd(char **args, char ***env)
+void			print_pwd(char **args, char **vars __attribute__ ((unused)), char ***env)
 {
 	char	*line;
 

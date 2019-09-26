@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 12:24:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/28 12:49:41 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 14:13:24 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int			replace_env_variable_repl_end(char **args,
 
 	(void)env;
 	temp = args[i];
-	args[i] = ft_strjoin(temp, get_env(args[i] + *j + 1, env));
+	args[i] = ft_strjoin(temp, get_envs(args[i] + *j + 1, 2, g_shell->internal, env));
 	free(temp);
 	return (1);
 }
@@ -32,7 +32,7 @@ static void			replace_env_variable_repl_middle(char **str,
 
 	temp = ft_strsub(*str, *j + 1,
 			foundstable - *str - *j - 1);
-	temp2 = get_env(temp, env);
+	temp2 = get_envs(temp, 2, g_shell->internal, env);
 	*j += ft_strlen(temp2);
 	free(temp);
 	temp = *str;

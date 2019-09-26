@@ -6,20 +6,20 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/18 18:17:12 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/26 14:30:27 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void			ft_echo(char **args, char ***env)
+void			ft_echo(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 {
 	int		i;
 	int		first;
 
 	i = 1;
 	first = 0;
-	++env;
+	shell++;
 	if (ft_strequ(args[1], "-n"))
 		++i;
 	while (args[i])

@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 16:28:21 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/25 20:19:45 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/27 14:28:42 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@
 static int					lexer_creating_cycle_cont(t_shell *shell,
 		t_token **token, char **last, char **command)
 {
-	if ('\"' == **last || '\'' == **last)
+	if (**last == '\\')
+		lexing_handling_baskslash(token, last, command);
+	else if ('\"' == **last || '\'' == **last)
 	{
 		if (!(*token = lexing_handling_quotes(shell, *token, last, command)))
 			return (-1);

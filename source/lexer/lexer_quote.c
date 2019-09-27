@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:58:07 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/10/04 15:13:35 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/27 14:32:13 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,44 @@ t_token						*lexing_handling_quotes(t_shell *shell,
 		token->str = temp;
 	}
 	return (token);
+}
+
+int							lexing_handling_baskslash(t_token **token,
+		char **last, char **command)
+{
+	char	*temp;
+
+	if (*token && (*token)->type == UKNOWN && (*last + 1))
+		lexing_handling_appword(*token, **last);
+	else if ((*last + 1))
+		*token = lexing_handling_initword(*token, **last);
+	++(*last);
+	if (!**last)
+	{
+		temp = ft_chrjoin((*token)->str, '\n');
+		line_editing_end(&g_shell->lineeditor, &g_shell->history);
+		free((*token)->str);
+		(*token)->str = temp;
+		free(*command);
+		ft_putstr("\n\\> ");
+		// !!!DANGEROUS!!!
+		g_shell->reading_mode = QUOTE;
+		if ((!(*command = input_command(&g_shell->lineeditor,
+						&g_shell->history, '\\', g_shell)) && ft_printf("\n"))
+			|| g_shell->reading_mode == READEND)
+		{
+			if (g_shell->reading_mode == READEND)
+				ft_printf("\n21sh: syntax error: unexpected eof\n");
+			free((*token)->str);
+			free(token);
+			free_lineeditor(&g_shell->lineeditor);
+			return (-1);
+		}
+		*last = *command - 1;
+	}
+	else if (*token && (*token)->type == UKNOWN)
+		lexing_handling_appword(*token, **last);
+	else
+		*token = lexing_handling_initword(*token, **last);
+	return (0);
 }

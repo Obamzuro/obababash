@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 15:20:23 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/27 14:28:18 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,4 +362,7 @@ int			job_is_stopped(t_job *j);
 int			set_env_check_existing(char *key, char *value, char **env);
 
 char		*get_envs(char *key, int amount_envs, ...);
+
+int							lexing_handling_baskslash(t_token **token,
+		char **last, char **command);
 #endif

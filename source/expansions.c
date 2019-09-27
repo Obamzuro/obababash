@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:47:04 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/25 19:43:20 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/27 15:01:32 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,72 @@ int					quote_removing(t_shell *shell, char **args)
 	while (args[++i])
 		quote_removing_str(&args[i]);
 	return (0);
+}
+
+void				reassemble_args(char ***args, int elem_to_delete)
+{
+	int		i;
+	char	**new_args;
+	char	is_deleted;
+
+	i = 0;
+	while ((*args)[i])
+		++i;
+	new_args = (char **)malloc(sizeof(char *) * i);
+	i = 0;
+	is_deleted = 0;
+	while ((*args)[i])
+	{
+		if (i == elem_to_delete)
+			elem_to_delete = 1;
+		else if (!is_deleted)
+			new_args[i] = (*args)[i];
+		else if (is_deleted)
+			new_args[i] = (*args)[i + 1];
+		++i;
+	}
+	*args = new_args;
+	free(*args);
+}
+
+void				backslash_handling(char ***args)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 0;
+	while ((*args)[i])
+	{
+		j = 0;
+		while ((*args)[i][j])
+		{
+			if ((*args)[i][j] == '\\')
+			{
+				if ((*args)[i][j + 1] == '\n')
+				{
+					if (!(*args)[i][j + 2])
+						reassemble_args(args, i);
+					else
+					{
+						(*args)[i][j] = 0;
+						temp = ft_strjoin((*args)[i], (*args)[i] + j + 2);
+						free((*args)[i]);
+						(*args)[i] = temp;
+					}
+				}
+				else
+				{
+					(*args)[i][j] = 0;
+					temp = ft_strjoin((*args)[i], (*args)[i] + j + 1);
+					free((*args)[i]);
+					(*args)[i] = temp;
+				}
+			}
+			++j;
+		}
+		++i;
+	}
 }
 
 //void				push_internals_variables(t_shell *shell, char **args)

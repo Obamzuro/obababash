@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/27 14:28:18 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/29 15:19:31 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,4 +365,5 @@ char		*get_envs(char *key, int amount_envs, ...);
 
 int							lexing_handling_baskslash(t_token **token,
 		char **last, char **command);
+void				backslash_handling(char ***args);
 #endif

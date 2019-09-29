@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:47:04 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/27 15:01:32 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/29 19:35:23 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,25 @@ void				quote_removing_str(char **str)
 	nextsearch = 0;
 	while (*str && **str)
 	{
-		if (!(quote = ft_strchr_str(*str + nextsearch, "\'\"")) ||
-			!(quote2 = ft_strchr(quote + 1, *quote)))
+		while (1)
+		{
+			quote = ft_strchr_str(*str + nextsearch, "\'\"");
+			if (!quote || !(quote != *str && *(quote - 1) == '\\' && *quote == '\"'))
+				break ;
+		}
+		if (!quote)
 			return ;
+		while (1)
+		{
+			quote2 = ft_strchr(quote + 1, *quote);
+			if (!quote2 || !(*(quote2 - 1) == '\\' && *quote == '\"'))
+				break ;
+		}
+		if (!quote2)
+			return ;
+//		if (!(quote = ft_strchr_str(*str + nextsearch, "\'\"")) ||
+//			!(quote2 = ft_strchr(quote + 1, *quote)))
+//			return ;
 		nextsearch = quote2 - *str - 1;
 		*quote = 0;
 		*quote2 = 0;
@@ -83,41 +99,87 @@ void				reassemble_args(char ***args, int elem_to_delete)
 	while ((*args)[i])
 	{
 		if (i == elem_to_delete)
-			elem_to_delete = 1;
+			is_deleted = 1;
 		else if (!is_deleted)
 			new_args[i] = (*args)[i];
 		else if (is_deleted)
-			new_args[i] = (*args)[i + 1];
+			new_args[i - 1] = (*args)[i];
 		++i;
 	}
-	*args = new_args;
+	new_args[i - 1] = NULL;
+	free((*args)[elem_to_delete]);
 	free(*args);
+	*args = new_args;
 }
 
 void				backslash_handling(char ***args)
 {
 	int		i;
 	int		j;
+	int		squote;
+	int		dquote;
 	char	*temp;
+	char	*temp2;
 
 	i = 0;
 	while ((*args)[i])
 	{
 		j = 0;
+		squote = -1;
+		dquote = -1;
 		while ((*args)[i][j])
 		{
-			if ((*args)[i][j] == '\\')
+			if ((*args)[i][j] == '\'' && dquote == -1)
+			{
+				if (squote == -1)
+					squote = j;
+				else
+				{
+					temp = (*args)[i];
+					(*args)[i][squote] = '\0';
+					(*args)[i][j] = '\0';
+					temp2 = ft_strjoin((*args)[i], (*args)[i] + squote + 1);
+					(*args)[i] = ft_strjoin(temp2, (*args)[i] + j + 1);
+					free(temp);
+					free(temp2);
+					j -= 2;
+					squote = -1;
+				}
+			}
+			else if ((*args)[i][j] == '\"' && squote == -1)
+			{
+				if (dquote == -1)
+					dquote = j;
+				else
+				{
+					temp = (*args)[i];
+					(*args)[i][dquote] = '\0';
+					(*args)[i][j] = '\0';
+					temp2 = ft_strjoin((*args)[i], (*args)[i] + dquote + 1);
+					(*args)[i] = ft_strjoin(temp2, (*args)[i] + j + 1);
+					free(temp);
+					free(temp2);
+					j -= 2;
+					dquote = -1;
+				}
+			}
+			else if ((*args)[i][j] == '\\' && squote == -1)
 			{
 				if ((*args)[i][j + 1] == '\n')
 				{
 					if (!(*args)[i][j + 2])
+					{
 						reassemble_args(args, i);
+						--i;
+						break ;
+					}
 					else
 					{
 						(*args)[i][j] = 0;
 						temp = ft_strjoin((*args)[i], (*args)[i] + j + 2);
 						free((*args)[i]);
 						(*args)[i] = temp;
+						--j;
 					}
 				}
 				else

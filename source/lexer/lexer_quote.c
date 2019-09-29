@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:58:07 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/27 14:32:13 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/29 17:22:53 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ t_token						*lexing_handling_quotes(t_shell *shell,
 	while (1)
 	{
 		++(*last);
-		if (**last == delim && !lexing_handling_appword(token, delim))
+		if (**last == delim && (*(*last - 1) != '\\' || delim != '\"'))
+		{
+			lexing_handling_appword(token, delim);
 			break ;
+		}
 		if (!**last)
 		{
 			if (lexing_handling_quotes_ifnull(shell,

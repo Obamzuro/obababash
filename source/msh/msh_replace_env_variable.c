@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 12:24:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 14:13:24 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/09/29 16:04:51 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int			replace_env_variable_repl(char **args, char **env,
 	char	*foundstable;
 
 	args[i][*j] = 0;
-	foundstable = ft_strchr_str(args[i] + *j + 1, "$\'\" \t\n");
+	foundstable = ft_strchr_str(args[i] + *j + 1, "\\$\'\" \t\n");
 	if (!foundstable && replace_env_variable_repl_end(args, env, i, j))
 		return (1);
 	else
@@ -74,9 +74,10 @@ void				env_expansion_kernel(t_shell *shell,
 			++j && (dquotemode = !dquotemode);
 		else if (args[i][j] == '\'' && !dquotemode)
 			++j && (squotemode = !squotemode);
-		else if (!squotemode && args[i][j] == '$')
+		else if (!squotemode && args[i][j] == '$' && !(j > 0 && args[i][j - 1] == '\\'))
 		{
-			if (ft_is_char_in_str(args[i][j + 1], "$\'\" \t\n")
+			// IS NEED???????????????????????????????
+			if (ft_is_char_in_str(args[i][j + 1], "\\$\'\" \t\n")
 						|| !args[i][j + 1])
 			{
 				++j;

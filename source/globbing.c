@@ -6,21 +6,60 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 18:19:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/06 19:51:03 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/13 14:35:23 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-char		*glob_wildcard(t_glob_file *file)
+int			(*return_glob_func(char *filename))(char *, char *);
+
+int glob_standard(char *filename, char *pattern)
 {
-	return (arg);
+	if (!*pattern && !*filename)
+		return (1);
+	if (!*filename)
+		return (0);
+	if (!*pattern)
+		return (0);
+	if (*filename == *pattern)
+		return (!(*(pattern + 1)) || return_glob_func(pattern + 1)(filename + 1, pattern + 1));
+	return (0);
+}
+
+int glob_wildcard(char *filename, char *pattern)
+{
+	if (!*pattern || !*(pattern + 1))
+		return (1);
+	if (!*filename)
+		return (0);
+	if (return_glob_func(pattern)(filename + 1, pattern))
+		return (1);
+	if (return_glob_func(pattern + 1)(filename, pattern + 1))
+		return (1);
+	if (return_glob_func(pattern + 1)(filename + 1, pattern + 1))
+		return (1);
+	return (0);
 }
 
 t_char_glob_corr globs[] =
 {
 	{ '*', glob_wildcard },
 };
+
+int			(*return_glob_func(char *pattern))(char *, char *)
+{
+	int		i;
+
+	i = 0;
+	while (i < sizeof(globs) / sizeof(*globs))
+	{
+		if (*pattern == globs[i].character)
+			return (globs[i].func);
+		++i;
+	}
+	return (glob_standard);
+}
 
 t_glob_file	**generate_files(void)
 {
@@ -43,6 +82,7 @@ t_glob_file	**generate_files(void)
 		++amount_of_files;
 	closedir(dir);
 	dir = opendir(current_dir);
+	free(current_dir);
 	if (!dir)
 	{
 		ft_fprintf(STDERR_FILENO, "42sh: can't access current directory for globbing\n");
@@ -57,6 +97,7 @@ t_glob_file	**generate_files(void)
 		files[i]->mark = MATCH;
 		++i;
 	}
+	closedir(dir);
 	if (i != amount_of_files)
 	{
 		while (i != amount_of_files)
@@ -71,12 +112,10 @@ t_glob_file	**generate_files(void)
 	return (files);
 }
 
-char		*globbing_arg(char *arg)
+int			is_globbing_need(char *arg)
 {
-	int			i;
-	int			j;
-	char		*temp;
-	t_glob_file	**files;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (arg[i])
@@ -85,27 +124,156 @@ char		*globbing_arg(char *arg)
 		while (j < sizeof(globs) / sizeof(*globs))
 		{
 			if (arg[i] == globs[j].character)
-			{
-				files = generate_files();
-				if (!files)
-					return (NULL);
-				temp = globs[j].func(files);
-			}
+				return (1);
 			++j;
 		}
+		++i;
 	}
-	return (arg);
+	return (0);
 }
 
-void		globbing(char **args)
+char		**globbing_arg(char *arg)
 {
-	int		i;
-	char	*res;
+	int			i;
+	int			j;
+	int			k;
+	int			amount_of_matches;
+	t_glob_file	**files;
+	char		**ret;
 
 	i = 0;
-	while (args[i])
+	if (!is_globbing_need(arg))
 	{
-		res = globbing_arg(args[i]);
-
+		ret = (char **)(malloc(sizeof(char *) * 2));
+		ret[0] = ft_strdup(arg);
+		ret[1] = NULL;
+		return (ret);
 	}
+	files = generate_files();
+	while (files[i])
+	{
+		if (!return_glob_func(arg)(files[i]->name, arg))
+			files[i]->mark = NOTMATCH;
+		++i;
+	}
+	i = -1;
+	amount_of_matches = 0;
+	while (files[++i])
+		if (files[i]->mark == MATCH)
+			++amount_of_matches;
+	if (!amount_of_matches)
+	{
+		i = -1;
+		while (files[++i])
+		{
+			free(files[i]->name);
+			free(files[i]);
+		}
+		free(files);
+		return (NULL);
+	}
+	ret = (char **)(malloc(sizeof(char *) * (amount_of_matches + 1)));
+	i = -1;
+	j = 0;
+	while (files[++i])
+	{
+		if (files[i]->mark == MATCH)
+		{
+			ret[j] = ft_strdup(files[i]->name);
+			++j;
+		}
+		free(files[i]->name);
+		free(files[i]);
+	}
+	ret[j] = NULL;
+	free(files);
+	return (ret);
+	//return_glob_func();
+}
+
+void		free_args(t_ftvector *all_args)
+{
+	int		i;
+	int		j;
+	char	**args;
+
+	i = 0;
+	while (i < all_args->len)
+	{
+		args = (char **)((all_args->elem)[i]);
+		j = -1;
+		while (args[++j])
+			free(args[j]);
+//		free(args);
+		++i;
+	}
+	free_ftvector(all_args);
+}
+
+void		glob_reassemble(char ***args, t_ftvector *all_args)
+{
+	int		i;
+	int		j;
+	int		args_amount;
+	char	**args_piece;
+
+	i = 0;
+	args_amount = 0;
+	while (i < all_args->len)
+	{
+		j = 0;
+		args_piece = (char **)(all_args->elem[i]);
+		while (args_piece[j])
+		{
+			++args_amount;
+			++j;
+		}
+		++i;
+	}
+	*args = (char **)(malloc(sizeof(char *) * (args_amount + 1)));
+	i = 0;
+	args_amount = 0;
+	while (i < all_args->len)
+	{
+		j = 0;
+		args_piece = (char **)(all_args->elem[i]);
+		while (args_piece[j])
+		{
+			(*args)[args_amount] = ft_strdup(args_piece[j]);
+			free(args_piece[j]);
+			++args_amount;
+			++j;
+		}
+		++i;
+	}
+	(*args)[args_amount] = NULL;
+	free_ftvector(all_args);
+}
+
+int			globbing(char ***args)
+{
+	int			i;
+	t_ftvector	all_args;
+	char		**glob_filenames;
+
+	i = 0;
+	init_ftvector(&all_args);
+	while ((*args)[i])
+	{
+		glob_filenames = globbing_arg((*args)[i]);
+		if (!glob_filenames)
+		{
+			free_args(&all_args);
+			ft_fprintf(STDERR_FILENO, "42sh: no matches found: %s\n", (*args)[i]);
+			return (-1);
+		}
+		push_ftvector(&all_args, glob_filenames);
+		++i;
+	}
+	i = -1;
+	while ((*args)[++i])
+		free((*args)[i]);
+	free(*args);
+	glob_reassemble(args, &all_args);
+	return (0);
 }

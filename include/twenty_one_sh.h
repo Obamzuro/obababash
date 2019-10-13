@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/06 19:51:02 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/13 12:54:59 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,12 +198,6 @@ typedef struct		s_comm_corr
 	void	(*func)(char **, char **, t_shell *);
 }					t_comm_corr;
 
-typedef struct		s_char_glob_corr
-{
-	char	character;
-	char	*(*func)(char *);
-}					t_char_glob_corr;
-
 typedef enum		e_file_mark
 {
 	MATCH = 0,
@@ -217,6 +211,13 @@ typedef struct		s_glob_file
 	t_file_mark	mark;
 }					t_glob_file;
 
+typedef struct		s_char_glob_corr
+{
+	char			character;
+	int 			(*func)(char *, char *);
+}					t_char_glob_corr;
+
+int					globbing(char ***args);
 void				push_variables_into_env(t_shell *shell, char **args, char ***env, char ***dop_env);
 
 void				ft_exit(char **args, char **vars, t_shell *shell);

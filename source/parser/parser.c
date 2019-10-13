@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/29 19:20:06 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/13 14:31:49 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,11 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	char				**vars;
 
 	command_token = (t_command_token *)ast->content;
-	args = command_token->args;
 	vars = command_token->vars;
+
+	globbing(&(((t_command_token *)ast->content)->args));
+	args = command_token->args;
+
 	tilde_expansion(shell, args);
 	env_expansion(shell, args);
 	backslash_handling(&command_token->args);

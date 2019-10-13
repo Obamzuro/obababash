@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 18:19:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/13 14:35:23 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/13 15:34:34 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,34 @@ int			(*return_glob_func(char *filename))(char *, char *);
 
 int glob_standard(char *filename, char *pattern)
 {
-	if (!*pattern && !*filename)
+	if (*filename != *pattern)
+		return (0);
+	if (!*(filename + 1) && !*(pattern + 1))
 		return (1);
-	if (!*filename)
+//	if (!*(filename + 1))
+//		return (0);
+	if (!*(pattern + 1))
 		return (0);
-	if (!*pattern)
+	return (return_glob_func(pattern + 1)(filename + 1, pattern + 1));
+}
+
+int	glob_one_char(char *filename, char *pattern)
+{
+	if (!*(pattern + 1) && !*(filename + 1))
+		return (1);
+//	if (!*(filename + 1))
+//		return (0);
+	if (!*(pattern + 1))
 		return (0);
-	if (*filename == *pattern)
-		return (!(*(pattern + 1)) || return_glob_func(pattern + 1)(filename + 1, pattern + 1));
-	return (0);
+	return (return_glob_func(pattern + 1)(filename + 1, pattern + 1));
 }
 
 int glob_wildcard(char *filename, char *pattern)
 {
-	if (!*pattern || !*(pattern + 1))
+//	ft_printf("%15s | %15s\n", filename, pattern);
+	if (!*(pattern + 1))
 		return (1);
-	if (!*filename)
+	if (!*filename && *(pattern + 1))
 		return (0);
 	if (return_glob_func(pattern)(filename + 1, pattern))
 		return (1);
@@ -42,9 +54,32 @@ int glob_wildcard(char *filename, char *pattern)
 	return (0);
 }
 
+int	glob_interval(char *filename, char *pattern)
+{
+	char	begin;
+	char	end;
+
+	if (!(*pattern + 1) || *(pattern + 2) != '-' || !*(pattern + 3) || *(pattern + 4) != ']')
+		return (0);
+	begin = *(pattern + 1);
+	end = *(pattern + 3);
+	pattern += 4;
+	if (*filename < begin || *filename > end)
+		return (0);
+	if (!*(filename + 1) && !*(pattern + 1))
+		return (1);
+//	if (!*(filename + 1))
+//		return (0);
+	if (!*(pattern + 1))
+		return (0);
+	return (return_glob_func(pattern + 1)(filename + 1, pattern + 1));
+}
+
 t_char_glob_corr globs[] =
 {
 	{ '*', glob_wildcard },
+	{ '?', glob_one_char },
+	{ '[', glob_interval },
 };
 
 int			(*return_glob_func(char *pattern))(char *, char *)

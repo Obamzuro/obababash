@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 12:24:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/29 16:04:51 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/19 18:27:28 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,63 @@ static int			replace_env_variable_repl(char **args, char **env,
 	return (0);
 }
 
-void				env_expansion_kernel(t_shell *shell,
+static int			replace_env_variable_repl_brackets_end(char **args,
+		char **env, int i, int *j)
+{
+	char	*temp;
+	char	*key;
+
+	(void)env;
+	temp = args[i];
+	key = parameter_expansion_dedicated(args[i] + *j + 1, env);
+	if (!key)
+		return (-1);
+	args[i] = ft_strjoin(temp, key);
+	free(key);
+	free(temp);
+	return (0);
+}
+
+static int			replace_env_variable_repl_brackets_middle(char **str,
+		int *j, char *foundstable, char **env)
+{
+	char	*temp;
+	char	*temp2;
+
+	temp = ft_strsub(*str, *j + 1,
+			foundstable - *str - *j - 1);
+	temp2 = parameter_expansion_dedicated(temp, env);
+	*j += ft_strlen(temp2);
+	free(temp);
+	if (!temp2)
+		return (-1);
+	temp = *str;
+	*str = ft_strjoin(temp, temp2);
+	free(temp2);
+	temp2 = ft_strdup(foundstable + 1);
+	free(temp);
+	temp = *str;
+	*str = ft_strjoin(temp, temp2);
+	free(temp);
+	free(temp2);
+	return (0);
+}
+
+static int			replace_env_variable_repl_brackets(char **args, char **env,
+		int i, int *j)
+{
+	char	*foundstable;
+
+	args[i][*j] = 0;
+	*j += 1;
+	foundstable = ft_strchr_str(args[i] + *j + 1, "}");
+	if (!foundstable)
+		return (replace_env_variable_repl_brackets_end(args, env, i, j));
+	else
+		return (replace_env_variable_repl_brackets_middle(&args[i], j, foundstable, env));
+}
+
+int					env_expansion_kernel(t_shell *shell,
 		int i, char **args)
 {
 	int		squotemode;
@@ -77,7 +133,13 @@ void				env_expansion_kernel(t_shell *shell,
 		else if (!squotemode && args[i][j] == '$' && !(j > 0 && args[i][j - 1] == '\\'))
 		{
 			// IS NEED???????????????????????????????
-			if (ft_is_char_in_str(args[i][j + 1], "\\$\'\" \t\n")
+			if (args[i][j + 1] == '{')
+			{
+				if (replace_env_variable_repl_brackets(args, shell->env, i, &j))
+					return (-1);
+				continue ;
+			}
+			else if (ft_is_char_in_str(args[i][j + 1], "\\$\'\" \t\n")
 						|| !args[i][j + 1])
 			{
 				++j;
@@ -88,6 +150,7 @@ void				env_expansion_kernel(t_shell *shell,
 		}
 		else
 			++j;
+	return (0);
 }
 
 int					env_expansion(t_shell *shell, char **args)
@@ -96,6 +159,7 @@ int					env_expansion(t_shell *shell, char **args)
 
 	i = -1;
 	while (args[++i])
-		env_expansion_kernel(shell, i, args);
+		if (env_expansion_kernel(shell, i, args))
+			return (-1);
 	return (0);
 }

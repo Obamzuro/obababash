@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 15:47:47 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/19 17:40:04 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void				init_env(void)
 	value = get_env("USER", g_shell->env);
 	if (value)
 	{
-		tmp = ft_strjoin("/User/", value);
+		tmp = ft_strjoin("/Users/", value);
 		set_env("HOME", tmp, &g_shell->env);
 		free(tmp);
 	}

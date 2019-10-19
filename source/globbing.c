@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 18:19:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/14 14:26:19 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/19 18:10:19 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,20 +239,27 @@ int			is_globbing_need(char *arg)
 {
 	int		i;
 	int		j;
+	int		teoretical;
 
 	i = 0;
+	teoretical = 0;
 	while (arg[i])
 	{
 		j = 0;
+		if (arg[i] == '$')
+			return (0);
 		while (j < sizeof(globs) / sizeof(*globs))
 		{
 			if (arg[i] == globs[j].character)
-				return (1);
+				teoretical = 1;
 			++j;
 		}
 		++i;
 	}
-	return (0);
+	if (teoretical)
+		return (1);
+	else
+		return (0);
 }
 
 char		**globbing_arg(char *arg)

@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/13 14:31:49 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/19 18:06:01 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,15 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	args = command_token->args;
 
 	tilde_expansion(shell, args);
-	env_expansion(shell, args);
+	if (env_expansion(shell, args))
+		return (0);
 	backslash_handling(&command_token->args);
 //	quote_removing(shell, args);
 	args = command_token->args;
 
 	tilde_expansion(shell, vars);
-	env_expansion(shell, vars);
+	if (env_expansion(shell, vars))
+		return (0);
 	backslash_handling(&vars);
 //	quote_removing(shell, vars);
 

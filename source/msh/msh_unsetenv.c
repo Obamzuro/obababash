@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:53:18 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 15:20:10 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/20 15:05:16 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,12 @@ void				unset_env_kernel(char *arg, char ***env)
 
 void				unset_env(char **args, char ***env)
 {
-	unset_env_kernel(args[1], env);
+	int		i;
+
+	i = 1;
+	while (args[i])
+	{
+		unset_env_kernel(args[i], env);
+		++i;
+	}
 }

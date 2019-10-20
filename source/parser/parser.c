@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/19 18:06:01 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/20 14:58:53 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,12 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 		push_variables_into_env(shell, vars, &shell->internal, &shell->env);
 		return (0);
 	}
-	push_variables_into_env(shell, shell->env, &vars, NULL);
-	((t_command_token *)ast->content)->vars = vars;
 //	get_child_variables(shell, &ast->content);
 	if (!handle_commands(args, vars, shell))
 	{
+		// HMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+		push_variables_into_env(shell, shell->env, &vars, NULL);
+		((t_command_token *)ast->content)->vars = vars;
 		if (needfork)
 		{
 			if (ft_exec(args, &vars, 1, cur_job) == -1)

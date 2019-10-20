@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 13:50:50 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/20 15:01:57 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_comm_corr g_commands[] =
 	{"set", ft_set_comm},
 	{"export", ft_export_comm},
 	{"unset", ft_unset_comm},
+	{"alias", ft_alias},
+	{"unalias", ft_unalias},
 //	{"env", print_env},
 //	{"setenv", set_env_comm},
 //	{"unsetenv", unset_env},

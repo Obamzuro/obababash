@@ -6,11 +6,50 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/19 17:40:04 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/20 16:00:18 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
+
+void					alias_expansion(char **command)
+{
+	int		i;
+	char	*word;
+	char	*temp;
+	char	separator;
+	char	*value;
+
+	word = NULL;
+	i = 0;
+	while (1)
+	{
+		if (ft_is_char_in_str((*command)[i], " \t\n&|><;\v\r") || !(*command)[i])
+		{
+			if ((value = get_env(word, g_shell->aliases)))
+			{
+				separator = (*command)[i];
+				(*command)[i] = '\0';
+				temp = *command;
+				*command = (char *)ft_memalloc(ft_strlen(value) + 1 + ft_strlen((*command) + i + 1) + 1);
+				ft_strcpy((*command), value);
+				(*command)[ft_strlen(value)] = separator;
+				ft_strcat((*command), temp + i + 1);
+				(*command)[ft_strlen((*command))] = 0;
+				free(temp);
+			}
+			break ;
+		}
+		temp = word;
+		word = (char *)malloc(ft_strlen(temp) + 2);
+		ft_strcpy(word, temp);
+		word[ft_strlen(temp)] = (*command)[i];
+		word[ft_strlen(temp) + 1] = '\0';
+		free(temp);
+		++i;
+	}
+	free(word);
+}
 
 static char				*lineediting(t_shell *shell)
 {
@@ -29,10 +68,35 @@ static char				*lineediting(t_shell *shell)
 	le_unselect(&shell->lineeditor, &shell->history, NULL);
 	print_buffer(&shell->lineeditor, &shell->history, 0, 0);
 	line_editing_end(&shell->lineeditor, &shell->history);
+	alias_expansion(&command);
 	return (command);
 }
 
 char *last_command;
+
+//void					alias_expansion_token()
+//{
+//
+//}
+//
+//void					alias_expansion()
+//{
+//	int			i;
+//	t_token		*token;
+//
+//	i = 0;
+//	while (1)
+//	{
+//		token = (t_token *)(g_shell->lexer->tokens.elem[i]);
+//		if (!token || token->type != WORD)
+//			return ;
+//		get_env(token->str, g_shell->aliases);
+//		alias_expansion_token();
+//		if (!ft_strlen(token->str) || token->str[ft_strlen(token->str) - 1] != ' ')
+//			return ;
+//		++i;
+//	}
+//}
 
 static int				lexing(t_shell *shell, char *command)
 {
@@ -53,6 +117,7 @@ static int				lexing(t_shell *shell, char *command)
 		shell->history.commands[shell->history.last] = 0;
 		return (-1);
 	}
+//	alias_expansion();
 	return (0);
 }
 
@@ -130,6 +195,7 @@ static void				preparation(t_shell *shell)
 
 t_shell					*g_shell;
 t_job	*first_job = NULL;
+//t_list					*g_aliases = NULL;
 
 int						main(void)
 {
@@ -139,6 +205,8 @@ int						main(void)
 
 	g_shell = &shell;
 	preparation(&shell);
+	shell.aliases = (char **)malloc(sizeof(char *));
+	shell.aliases[0] = NULL;
 	shell.env = fill_env(environ);
 	shell.internal = (char **)malloc(sizeof(char *));
 	shell.internal[0] = NULL;

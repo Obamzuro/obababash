@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/19 17:32:19 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/20 15:01:40 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-# define AM_COMMANDS 9
+# define AM_COMMANDS 11
 # define AM_OPERATORS 11
 # define AM_LEVELS 4
 # define AM_SEPARATOROP 3
@@ -183,6 +183,7 @@ typedef struct		s_shell
 {
 	char			**internal;
 	char			**env;
+	char			**aliases;
 	t_initfd		initfd;
 	t_history		history;
 	t_lexer			*lexer;
@@ -389,4 +390,7 @@ int							lexing_handling_baskslash(t_token **token,
 void				backslash_handling(char ***args);
 
 char						*parameter_expansion_dedicated(char *key, char **env);
+
+void						ft_alias(char **args, char **vars, t_shell *shell);
+void						ft_unalias(char **args, char **vars, t_shell *shell);
 #endif

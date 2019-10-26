@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/20 16:00:18 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/26 21:13:05 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static int				lexing(t_shell *shell, char *command)
 	if (last_command)
 		free(last_command);
 	last_command = ft_strdup(command);
+	command_substition(&command);
 	if (lexer_creating(command, shell))
 	{
 		free_lexer(shell->lexer);
@@ -121,7 +122,7 @@ static int				lexing(t_shell *shell, char *command)
 	return (0);
 }
 
-static int				creating_ast(t_shell *shell)
+int				creating_ast(t_shell *shell)
 {
 	if (!(shell->ast = create_background_ast(0,
 					shell->lexer->tokens.len - 1, shell)))

@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/20 15:01:40 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/26 21:13:01 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,4 +393,7 @@ char						*parameter_expansion_dedicated(char *key, char **env);
 
 void						ft_alias(char **args, char **vars, t_shell *shell);
 void						ft_unalias(char **args, char **vars, t_shell *shell);
+
+int				creating_ast(t_shell *shell);
+int				command_substition(char **command);
 #endif

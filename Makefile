@@ -6,7 +6,7 @@
 #    By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/20 14:37:27 by obamzuro         ###   ########.fr        #
+#    Updated: 2019/10/26 19:41:20 by obamzuro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,8 @@ SRCNAME = main.c	\
 		  history.c\
 		  additional.c\
 		  globbing.c\
-		  parameter_expansion_dedicated.c
+		  parameter_expansion_dedicated.c\
+		  command_substition.c
 
 FLAGS = -g# -Wall -Wextra -Werror
 

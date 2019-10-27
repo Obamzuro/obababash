@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 16:28:21 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/27 14:28:42 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/27 18:36:26 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int					lexer_creating_cycle_cont(t_shell *shell,
 	}
 	else if (!**last)
 		return (lexing_handling_end(shell, *token, last, command));
-	else if (ft_strchr(" \t", **last))
+	else if (ft_strchr(" \t\n", **last))
 		*token = lexing_handling_separator(shell->lexer, *token);
 	else if (*token && (*token)->type == UKNOWN)
 		lexing_handling_appword(*token, **last);

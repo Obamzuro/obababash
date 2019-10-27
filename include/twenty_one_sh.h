@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/26 21:13:01 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/27 19:17:04 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-# define AM_COMMANDS 11
+# define AM_COMMANDS 12
 # define AM_OPERATORS 11
 # define AM_LEVELS 4
 # define AM_SEPARATOROP 3
@@ -235,6 +235,7 @@ void				print_env(char **args, char ***env);
 //void				set_env_comm(char **args, char ***env);
 void				unset_env(char **args, char ***env);
 void				unset_env_kernel(char *arg, char ***env);
+void				hash_comm(char **args, char **vars, t_shell *shell);
 
 typedef struct		s_esc_corr
 {
@@ -246,6 +247,7 @@ typedef struct		s_esc_corr
 
 extern char		*last_command;
 extern t_shell *g_shell;
+extern t_ftvector *g_hash;
 
 char				**fill_env(char **environ);
 void				fill_commands(t_comm_corr *commands);

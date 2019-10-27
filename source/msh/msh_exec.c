@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:33 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/22 18:11:53 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/27 19:32:38 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,26 @@ static char		*ft_exec_path_find_comm(char **args, char **paths)
 	struct stat	mystat;
 	char		*temp;
 
+	i = 0;
+	while (i < g_hash->len)
+	{
+		temp = g_hash->elem[i];
+		if (ft_strequ(args[0], ft_strrchr(temp, '/') + 1))
+		{
+			ft_printf("ALLO\n");
+			if (lstat(temp, &mystat) != -1)
+			{
+				if (access(temp, X_OK) == -1)
+				{
+					ft_fprintf(2, "21sh: Permission denied: %s\n", args[0]);
+					return (0);
+				}
+				else
+					return (ft_strdup(temp));
+			}
+		}
+		++i;
+	}
 	i = 0;
 	while (paths[i])
 	{
@@ -31,7 +51,10 @@ static char		*ft_exec_path_find_comm(char **args, char **paths)
 				return (0);
 			}
 			else
+			{
+				push_ftvector(g_hash, ft_strdup(temp));
 				return (temp);
+			}
 		}
 		free(temp);
 		++i;

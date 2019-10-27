@@ -6,7 +6,7 @@
 #    By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/26 19:41:20 by obamzuro         ###   ########.fr        #
+#    Updated: 2019/10/27 19:22:20 by obamzuro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCNAME = main.c	\
 		  msh/msh_jobs.c\
 		  msh/msh_env_commands.c\
 		  msh/ft_alias.c\
+		  msh/hash_comm.c\
 		  lineeditor/le_input_command.c\
 		  lineeditor/le_input_command2.c\
 		  lineeditor/le_print.c\

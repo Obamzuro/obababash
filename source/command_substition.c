@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/26 21:18:05 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/27 18:30:30 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,29 @@ static int		substitute(char **command, int *iter)
 	if (lexer_creating(new_command, g_shell))
 	{
 		free_lexer(g_shell->lexer);
+		dup2(old_stdout, STDOUT_FILENO);
+		close(fdpipe[0]);
+		close(old_stdout);
 		return (-1);
 	}
 	if (!g_shell->lexer->tokens.len)
 	{
 		free_lexer(g_shell->lexer);
-		return (-1);
+		dup2(old_stdout, STDOUT_FILENO);
+		close(fdpipe[0]);
+		close(old_stdout);
+		*((*command) + *iter) = '\0';
+		tmp = (*command);
+		(*command) = ft_strjoin((*command), end + 1);
+		free(tmp);
+		return (-2);
 	}
 	if (creating_ast(g_shell))
 	{
 		free_lexer(g_shell->lexer);
+		dup2(old_stdout, STDOUT_FILENO);
+		close(fdpipe[0]);
+		close(old_stdout);
 		return (-1);
 	}
 	/// ?????????????????????????/
@@ -81,7 +94,8 @@ int				command_substition(char **command)
 	while ((*command)[i])
 	{
 		if ((*command)[i] == '$' && (*command)[i + 1] == '(')
-			substitute(command, &i);
+			if (substitute(command, &i) == -1)
+				return (-1);
 		++i;
 	}
 	return (0);

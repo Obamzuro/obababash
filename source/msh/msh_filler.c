@@ -6,7 +6,7 @@
 /*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/20 15:01:57 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/27 19:14:32 by obamzuro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_comm_corr g_commands[] =
 {
 //	{"pwd", print_pwd},
+	{"hash", hash_comm},
 	{"cd", change_dir},
 	{"set", ft_set_comm},
 	{"export", ft_export_comm},

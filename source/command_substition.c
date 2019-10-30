@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:15:41 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ static int		substitute(char **command, int *iter)
 	old_stdout = dup(STDOUT_FILENO);
 	dup2(fdpipe[1], STDOUT_FILENO);
 	close(fdpipe[1]);
-//	if (!new_command)
-//		return (-1);
 	if (lexer_creating(new_command, g_shell))
 	{
 		free_lexer(g_shell->lexer);
@@ -62,18 +60,12 @@ static int		substitute(char **command, int *iter)
 		close(old_stdout);
 		return (-1);
 	}
-	/// ?????????????????????????/
 	parse_ast(g_shell->ast, g_shell, 1, NULL);
 	free_lexer(g_shell->lexer);
 	free_ast(g_shell->ast);
 	ft_bzero(g_shell->lexer, sizeof(t_lexer));
 	ft_bzero(arr, sizeof(arr));
 	read(fdpipe[0], arr, sizeof(arr) - 1);
-//	while (read(fdpipe[0], arr, sizeof(arr) - 1) > 0)
-//	{
-//		ft_fprintf(STDERR_FILENO, "%s: %s", "kek", arr);
-//		ft_bzero(arr, sizeof(arr));
-//	}
 	dup2(old_stdout, STDOUT_FILENO);
 	close(fdpipe[0]);
 	close(old_stdout);

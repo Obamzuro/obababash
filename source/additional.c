@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:53:15 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:26:05 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int			mark_process_status(pid_t pid, int status)
 						p->completed = 1;
 						if (WIFSIGNALED(status))
 							ft_fprintf(STDERR_FILENO,\
-							"%d: Terminated by signal %d.\n", (int)pid, WTERMSIG(p->status));
+							"%d: Terminated by signal %d.\n",\
+							(int)pid, WTERMSIG(p->status));
 					}
 					return (0);
 				}
@@ -67,9 +68,6 @@ int			mark_process_status(pid_t pid, int status)
 			j = j->next;
 		}
 	}
-//	else if (!pid)
-//		return (-1);
-//		????????????????
 	if (pid > 0)
 		ft_fprintf(STDERR_FILENO, "No child process %d.\n", pid);
 	return (-1);
@@ -127,7 +125,6 @@ void		wait_for_job(t_job *job)
 	int		status;
 	pid_t	pid;
 
-//	print_processes();
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 	if (pid == -1)
 		perror("waitpid error: ");
@@ -152,7 +149,6 @@ void		put_job_in_foreground(t_job *job, int cont)
 {
 	extern struct termios		g_tty;
 
-	// shell->initfd.in ???
 	tcsetpgrp(STDIN_FILENO, job->pgid);
 	if (cont)
 	{
@@ -186,7 +182,6 @@ void		do_job_notification(void)
 
 	jlast = NULL;
 	j = g_first_job;
-//	print_processes();
 	update_status();
 	while (j)
 	{
@@ -194,8 +189,8 @@ void		do_job_notification(void)
 		if (job_is_completed(j))
 		{
 			if (!j->foreground)
-				ft_fprintf(STDERR_FILENO, "%ld: completed\n",\
-				j->pgid ? j->pgid : (j->first_process ? j->first_process->pid : 0));
+				ft_fprintf(STDERR_FILENO, "%ld: completed\n", j->pgid ?\
+				j->pgid : N_TERN(j->first_process, j->first_process->pid, 0));
 			if (jlast)
 				jlast->next = jnext;
 			else

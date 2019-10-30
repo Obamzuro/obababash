@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:52:52 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:14:16 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,12 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	tilde_expansion(shell, args);
 	if (env_expansion(shell, args))
 		return (0);
-	backslash_handling(&command_token->args);
+	backslash_handling(&command_token->args, 0);
 	args = command_token->args;
 	tilde_expansion(shell, vars);
 	if (env_expansion(shell, vars))
 		return (0);
-	backslash_handling(&vars);
+	backslash_handling(&vars, 0);
 	if (!args[0])
 	{
 		push_variables_into_env(shell, vars, &shell->internal, &shell->env);

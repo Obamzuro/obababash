@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:47:04 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:13:54 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ void				quote_removing_str(char **str)
 		}
 		if (!quote2)
 			return ;
-//		if (!(quote = ft_strchr_str(*str + nextsearch, "\'\"")) ||
-//			!(quote2 = ft_strchr(quote + 1, *quote)))
-//			return ;
 		nextsearch = quote2 - *str - 1;
 		*quote = 0;
 		*quote2 = 0;
@@ -113,9 +110,8 @@ void				reassemble_args(char ***args, int elem_to_delete)
 	*args = new_args;
 }
 
-void				backslash_handling(char ***args)
+void				backslash_handling(char ***args, int i)
 {
-	int		i;
 	int		j;
 	int		squote;
 	int		dquote;
@@ -196,47 +192,3 @@ void				backslash_handling(char ***args)
 		++i;
 	}
 }
-
-//void				push_internals_variables(t_shell *shell, char **args)
-//{
-//	int		i;
-//	char	*key;
-//	char	*value;
-//
-//	i = 0;
-//	while (args[i])
-//	{
-//		key = ft_strsub(args[i], 0, ft_strchr(args[i], '=') - args[i]);
-//		value = ft_strdup(ft_strchr(args[i], '=') + 1);
-//		set_env(key, value, &shell->internal);
-//		++i;
-//	}
-//}
-//
-//char				**internal_variables_handler(t_shell *shell, char ***args)
-//{
-//	int		i;
-//	int		internal_variables;
-//	char	**variables;
-//
-//	i = 0;
-//	internal_variables = 0;
-//	while ((*args)[i])
-//	{
-//		if (ft_strchr((*args)[i], '='))
-//			++internal_variables;
-//		++i;
-//	}
-//	if (i == internal_variables)
-//	{
-//		push_internals_variables(shell, *args);
-//		return (NULL);
-//	}
-//	variables = fill_env(shell->env);
-//	i = 0;
-//	while ((*args)[i])
-//	{
-//		++i;
-//	}
-//	return (variables);
-//}

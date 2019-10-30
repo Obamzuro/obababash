@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:42:48 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:23:15 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 
+# define N_TERN(a, b, c)	(a ? b : c)
 # define AM_COMMANDS 12
 # define AM_OPERATORS 11
 # define AM_LEVELS 4
@@ -385,7 +386,7 @@ char				*get_envs(char *key, int amount_envs, ...);
 
 int					lexing_handling_baskslash(t_token **token,
 		char **last, char **command);
-void				backslash_handling(char ***args);
+void				backslash_handling(char ***args, int i);
 
 char				*parameter_expansion_dedicated(char *key, char **env);
 

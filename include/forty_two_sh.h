@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   forty_two_sh.h                                    :+:      :+:    :+:   */
+/*   forty_two_sh.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:09:56 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:36:12 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,9 @@ typedef enum		e_reading_mode
 
 typedef struct		s_history
 {
-	char	*commands[AM_HISTORY];
-	int		last;
-	int		current;
+	char			*commands[AM_HISTORY];
+	int				last;
+	int				current;
 }					t_history;
 
 struct s_shell;
@@ -135,15 +135,15 @@ typedef struct		s_lineeditor
 
 typedef struct		s_initfd
 {
-	int		fdin;
-	int		fdout;
-	int		fderr;
+	int				fdin;
+	int				fdout;
+	int				fderr;
 }					t_initfd;
 
 typedef struct		s_border
 {
-	int		beg;
-	int		end;
+	int				beg;
+	int				end;
 }					t_border;
 
 typedef struct		s_token
@@ -154,29 +154,29 @@ typedef struct		s_token
 
 typedef struct		s_binary_token
 {
-	char	*left;
-	char	*right;
+	char			*left;
+	char			*right;
 }					t_binary_token;
 
 typedef struct		s_command_token
 {
-	char	**args;
-	char	**vars;
+	char			**args;
+	char			**vars;
 }					t_command_token;
 
 typedef struct		s_ast
 {
-	void				*content;
-	t_tokentype			type;
-	pid_t				pgid;
-	int					foreground;
-	struct s_ast		*left;
-	struct s_ast		*right;
+	void			*content;
+	t_tokentype		type;
+	pid_t			pgid;
+	int				foreground;
+	struct s_ast	*left;
+	struct s_ast	*right;
 }					t_ast;
 
 typedef struct		s_lexer
 {
-	t_ftvector	tokens;
+	t_ftvector		tokens;
 }					t_lexer;
 
 typedef struct		s_shell
@@ -195,8 +195,8 @@ typedef struct		s_shell
 
 typedef struct		s_comm_corr
 {
-	char	*comm;
-	void	(*func)(char **, char **, t_shell *);
+	char			*comm;
+	void			(*func)(char **, char **, t_shell *);
 }					t_comm_corr;
 
 typedef enum		e_file_mark
@@ -208,18 +208,19 @@ typedef enum		e_file_mark
 
 typedef struct		s_glob_file
 {
-	char		*name;
-	t_file_mark	mark;
+	char			*name;
+	t_file_mark		mark;
 }					t_glob_file;
 
 typedef struct		s_char_glob_corr
 {
 	char			character;
-	int 			(*func)(char *, char *);
+	int				(*func)(char *, char *);
 }					t_char_glob_corr;
 
 int					globbing(char ***args);
-void				push_variables_into_env(t_shell *shell, char **args, char ***env, char ***dop_env);
+void				push_variables_into_env(t_shell *shell, char **args,\
+char ***env, char ***dop_env);
 
 void				ft_exit(char **args, char **vars, t_shell *shell);
 void				ft_echo(char **args, char **vars, t_shell *shell);
@@ -239,20 +240,21 @@ void				hash_comm(char **args, char **vars, t_shell *shell);
 
 typedef struct		s_esc_corr
 {
-	char	*str;
-	void	(*func)(t_lineeditor *, t_history *);
-	int		is_printing : 1;
-	int		is_selecting : 1;
+	char			*str;
+	void			(*func)(t_lineeditor *, t_history *);
+	int				is_printing : 1;
+	int				is_selecting : 1;
 }					t_esc_corr;
 
-extern char		*g_last_command;
-extern t_shell *g_shell;
-extern t_ftvector *g_hash;
+extern char			*g_last_command;
+extern t_shell		*g_shell;
+extern t_ftvector	*g_hash;
 
 char				**fill_env(char **environ);
 void				fill_commands(t_comm_corr *commands);
 
-int					ft_exec(char **args, char ***env, int forkneed, t_job *cur_job);
+int					ft_exec(char **args, char ***env, int forkneed,\
+t_job *cur_job);
 void				set_env(char *key, char *value, char ***env);
 char				*get_env(char *key, char **env);
 void				int_handler(int sig);
@@ -312,7 +314,8 @@ int					env_expansion(t_shell *shell, char **args);
 int					quote_removing(t_shell *shell, char **args);
 
 int					free_ast(t_ast *ast);
-int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job);
+int					parse_ast(t_ast *ast, t_shell *shell, int needfork,\
+t_job *cur_job);
 int					parse_ast_redirection(t_ast *ast, t_shell *shell,
 		int needfork, t_job *cur_job);
 int					parse_ast_pipe(t_ast *ast, t_shell *shell, t_job *cur_job);
@@ -369,33 +372,29 @@ void				print_buffer(t_lineeditor *lineeditor, t_history *history,
 int					ft_putc(int c);
 void				write_line(t_lineeditor *lineeditor);
 
-
-
-
-
-void		put_job_in_foreground(t_job *job, int cont);
-void		put_job_in_background(t_job *job, int cont);
-void		wait_for_job(t_job *job);
-void		add_process_to_job(t_job *job, pid_t pid);
-void		do_job_notification(void);
-t_ast		*create_background_ast(int beg, int end,
+void				put_job_in_foreground(t_job *job, int cont);
+void				put_job_in_background(t_job *job, int cont);
+void				wait_for_job(t_job *job);
+void				add_process_to_job(t_job *job, pid_t pid);
+void				do_job_notification(void);
+t_ast				*create_background_ast(int beg, int end,
 		t_shell *shell);
-int			job_is_completed(t_job *j);
-int			job_is_stopped(t_job *j);
+int					job_is_completed(t_job *j);
+int					job_is_stopped(t_job *j);
 
-int			set_env_check_existing(char *key, char *value, char **env);
+int					set_env_check_existing(char *key, char *value, char **env);
 
-char		*get_envs(char *key, int amount_envs, ...);
+char				*get_envs(char *key, int amount_envs, ...);
 
-int							lexing_handling_baskslash(t_token **token,
+int					lexing_handling_baskslash(t_token **token,
 		char **last, char **command);
 void				backslash_handling(char ***args);
 
-char						*parameter_expansion_dedicated(char *key, char **env);
+char				*parameter_expansion_dedicated(char *key, char **env);
 
-void						ft_alias(char **args, char **vars, t_shell *shell);
-void						ft_unalias(char **args, char **vars, t_shell *shell);
+void				ft_alias(char **args, char **vars, t_shell *shell);
+void				ft_unalias(char **args, char **vars, t_shell *shell);
 
-int				creating_ast(t_shell *shell);
-int				command_substition(char **command);
+int					creating_ast(t_shell *shell);
+int					command_substition(char **command);
 #endif

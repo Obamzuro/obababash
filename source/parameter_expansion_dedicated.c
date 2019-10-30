@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 17:12:01 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:11:53 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,6 @@ char		*parameter_expansion_colon(char *key, char **env)
 		return (parameter_expansion_plus(key, additional, env));
 	return (0);
 }
-
-char		*parameter_expansion_sharp_small_character(char *str, char *pattern);
-char		*parameter_expansion_sharp_big_character(char *str, char *pattern);
 
 char		*parameter_expansion_sharp_small_wildchard(char *str, char *pattern)
 {

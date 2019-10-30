@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:03:17 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:14:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct		s_job
 	char			notified;
 	struct termios	tmodes;
 	int				foreground;
-//	int stdin, stdout, stderr;
 }					t_job;
 
 extern t_job		*g_first_job;
@@ -231,9 +230,7 @@ void				ft_bg(char **args, char **vars, t_shell *shell);
 void				ft_export_comm(char **args, char **vars, t_shell *shell);
 void				ft_unset_comm(char **args, char **vars, t_shell *shell);
 void				ft_set_comm(char **args, char **vars, t_shell *shell);
-//void				print_pwd(char **args, char **vars, t_shell *shell);
 void				print_env(char **args, char ***env);
-//void				set_env_comm(char **args, char ***env);
 void				unset_env(char **args, char ***env);
 void				unset_env_kernel(char *arg, char ***env);
 void				hash_comm(char **args, char **vars, t_shell *shell);
@@ -398,7 +395,9 @@ void				ft_unalias(char **args, char **vars, t_shell *shell);
 int					creating_ast(t_shell *shell);
 int					command_substition(char **command);
 
-char				*parameter_expansion_sharp_small_character(char *str, char *pattern);
-char				*parameter_expansion_sharp_big_character(char *str, char *pattern);
+char				*parameter_expansion_sharp_small_character(char *str,\
+char *pattern);
+char				*parameter_expansion_sharp_big_character(char *str,\
+char *pattern);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 12:24:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:28:44 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int					env_expansion_kernel(t_shell *shell,
 		else if (!squotemode && args[i][j] == '$' && !(j > 0\
 		&& args[i][j - 1] == '\\'))
 		{
-			if (args[i][j + 1] == '{')// IS NEED?
+			if (args[i][j + 1] == '{')
 			{
 				if (replace_env_variable_repl_brackets(args, shell->env, i, &j))
 					return (-1);

@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:46:18 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:27:21 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
 		if (!cur_job->pgid)
 			cur_job->pgid = pid;
 		setpgid(pid, cur_job->pgid);
-		///////////////
-//		if (cur_job->foreground)
-//			tcsetpgrp(shell->initfd.fdin, cur_job->pgid);
-//			//////////////////
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGTSTP, SIG_DFL);
@@ -62,7 +58,6 @@ static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
 	return (pid);
 }
 
-// TODO: Add foreground parameter
 int					parse_ast_pipe(t_ast *ast, t_shell *shell, t_job *cur_job)
 {
 	int			fdpipe[2];
@@ -85,9 +80,5 @@ int					parse_ast_pipe(t_ast *ast, t_shell *shell, t_job *cur_job)
 	}
 	close(fdpipe[0]);
 	close(fdpipe[1]);
-//	while (waitpid(pid[0], 0, 0) == -1)
-//		;
-//	while (waitpid(pid[1], 0, 0) == -1)
-//		;
 	return (1);
 }

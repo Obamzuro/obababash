@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:58:07 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:33:11 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int							lexing_handling_baskslash(t_token **token,
 		(*token)->str = temp;
 		free(*command);
 		ft_putstr("\n\\> ");
-		// !!!DANGEROUS!!!
 		g_shell->reading_mode = QUOTE;
 		if ((!(*command = input_command(&g_shell->lineeditor,
 						&g_shell->history, '\\', g_shell)) && ft_printf("\n"))
@@ -113,9 +112,3 @@ int							lexing_handling_baskslash(t_token **token,
 		*token = lexing_handling_initword(*token, **last);
 	return (0);
 }
-
-// int							lexing_handling_parameter_expansion(\
-// t_token **token, char **last, char **command)
-// {
-// 	return (0);
-// }

@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:42 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:30:20 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_comm_corr g_commands[] =
 {
-//	{"pwd", print_pwd},
 	{"hash", hash_comm},
 	{"cd", change_dir},
 	{"set", ft_set_comm},
@@ -22,9 +21,6 @@ t_comm_corr g_commands[] =
 	{"unset", ft_unset_comm},
 	{"alias", ft_alias},
 	{"unalias", ft_unalias},
-//	{"env", print_env},
-//	{"setenv", set_env_comm},
-//	{"unsetenv", unset_env},
 	{"echo", ft_echo},
 	{"exit", ft_exit},
 	{"jobs", ft_jobs},

@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/27 19:22:20 by obamzuro         ###   ########.fr        #
+#    Updated: 2019/10/30 20:48:37 by akyrychu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = 21sh
+NAME = 42sh
 
 SRCNAME = main.c	\
 		  msh/init_term.c\
@@ -71,7 +71,7 @@ HDRDIR = include	\
 		 libft/include		\
 		 ft_printf/include
 
-HDR = include/twenty_one_sh.h
+HDR = include/forty_two_sh.h
 
 all: lib $(NAME)
 

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_alias.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 14:21:04 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/20 16:00:51 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 void			ft_alias(char **args, char **vars, t_shell *shell)
 {
@@ -35,7 +35,8 @@ void			ft_alias(char **args, char **vars, t_shell *shell)
 	push_variables_into_env(g_shell, vars, &g_shell->aliases, NULL);
 }
 
-void			ft_unalias(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void			ft_unalias(char **args,\
+char **vars __attribute__((unused)), t_shell *shell)
 {
 	unset_env(args, &g_shell->aliases);
 }

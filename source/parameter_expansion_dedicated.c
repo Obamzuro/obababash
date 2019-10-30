@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parameter_expansion_dedicated.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 17:12:01 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/20 14:03:25 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 char		*parameter_expansion_plus(char *key, char *additional, char **env)
 {
@@ -128,7 +128,8 @@ char		*parameter_expansion_sharp_big_wildchard(char *str, char *pattern)
 	return (temp);
 }
 
-char		*parameter_expansion_sharp_small_character(char *str, char *pattern)
+char		*parameter_expansion_sharp_small_character(char *str,\
+char *pattern)
 {
 	char	*temp;
 
@@ -164,7 +165,8 @@ char		*parameter_expansion_sharp_big_character(char *str, char *pattern)
 	return (temp);
 }
 
-char		*parameter_expansion_sharp_small(char *key, char *additional, char **env)
+char		*parameter_expansion_sharp_small(char *key, char *additional,\
+char **env)
 {
 	char		*value;
 	char		*last;
@@ -182,7 +184,8 @@ char		*parameter_expansion_sharp_small(char *key, char *additional, char **env)
 		return (ft_strdup(value));
 }
 
-char		*parameter_expansion_sharp_big(char *key, char *additional, char **env)
+char		*parameter_expansion_sharp_big(char *key, char *additional,\
+char **env)
 {
 	char		*value;
 	char		*last;
@@ -200,7 +203,8 @@ char		*parameter_expansion_sharp_big(char *key, char *additional, char **env)
 		return (ft_strdup(value));
 }
 
-char		*parameter_expansion_procent_small(char *key, char *additional, char **env)
+char		*parameter_expansion_procent_small(char *key, char *additional,\
+char **env)
 {
 	char		*value;
 	char		*last;
@@ -213,9 +217,11 @@ char		*parameter_expansion_procent_small(char *key, char *additional, char **env
 	if (!additional[0])
 		return (temp_value);
 	else if (additional[0] == '*')
-		last = parameter_expansion_sharp_small_wildchard(temp_value, additional);
+		last = parameter_expansion_sharp_small_wildchard(temp_value,\
+		additional);
 	else
-		last = parameter_expansion_sharp_small_character(temp_value, additional);
+		last = parameter_expansion_sharp_small_character(temp_value,\
+		additional);
 	if (last)
 	{
 		free(temp_value);
@@ -225,7 +231,8 @@ char		*parameter_expansion_procent_small(char *key, char *additional, char **env
 		return (temp_value);
 }
 
-char		*parameter_expansion_procent_big(char *key, char *additional, char **env)
+char		*parameter_expansion_procent_big(char *key, char *additional,\
+char **env)
 {
 	char		*value;
 	char		*last;

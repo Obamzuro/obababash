@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   creator.c                                          :+:      :+:    :+:   */
+/*   creator_separator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 16:35:41 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/22 17:13:34 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 char				*(g_separator_op[AM_LEVELS][AM_SEPARATOROP]) =
 {

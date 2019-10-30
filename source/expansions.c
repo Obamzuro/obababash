@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:47:04 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/29 19:40:05 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 int					tilde_expansion(t_shell *shell, char **args)
 {
@@ -44,7 +44,8 @@ void				quote_removing_str(char **str)
 		while (1)
 		{
 			quote = ft_strchr_str(*str + nextsearch, "\'\"");
-			if (!quote || !(quote != *str && *(quote - 1) == '\\' && *quote == '\"'))
+			if (!quote || !(quote != *str && *(quote - 1) == '\\'\
+			&& *quote == '\"'))
 				break ;
 		}
 		if (!quote)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   le_right_up_down.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:10:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/10/04 15:04:38 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 static void			line_editing_right_incrseek(t_lineeditor *lineeditor,
 		t_history *history)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:46:57 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/15 14:46:23 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 static int					parse_ast_redirection_right(t_ast *ast)
 {
@@ -56,47 +56,50 @@ static int					parse_ast_redirection_kernel_heredoc(t_ast *ast,
 }
 
 static int					parse_ast_redirection_kernel(t_ast *ast,
-		t_shell *shell, int fd, int rightfd, t_job *cur_job)
+		t_shell *shell, int fd[], t_job *cur_job)
 {
 	int		oldfd;
 	int		devnull;
 
-	oldfd = dup(fd);
+	oldfd = dup(fd[0]);
 	if (ft_strequ(((t_binary_token *)(ast->right->content))->right, "-"))
 	{
 		devnull = open("/dev/null", O_RDWR);
-		dup2(devnull, fd);
+		dup2(devnull, fd[0]);
 		close(devnull);
 	}
 	else if (ft_strequ(ast->content, "<<"))
 	{
-		if (!parse_ast_redirection_kernel_heredoc(ast, fd))
+		if (!parse_ast_redirection_kernel_heredoc(ast, fd[0]))
 			return (0);
 	}
 	else
-		dup2(rightfd, fd);
+		dup2(fd[1], fd[0]);
 	if (!parse_ast(ast->left, shell, 0, cur_job))
 		return (0);
-	dup2(oldfd, fd);
+	dup2(oldfd, fd[0]);
 	close(oldfd);
 	return (1);
 }
 
+/*
+** fd[1] --> rightfd
+*/
+
 static int					parse_ast_redirection_child(t_ast *ast,
 		t_shell *shell, t_job *cur_job)
 {
-	int			fd;
-	int			rightfd;
+	int			fd[2];
 
 	if (((t_binary_token *)(ast->right->content))->left)
-		fd = ft_atoi(((t_binary_token *)(ast->right->content))->left);
+		fd[0] = ft_atoi(((t_binary_token *)(ast->right->content))->left);
 	else if (((char *)ast->content)[0] == '>')
-		fd = 1;
+		fd[0] = 1;
 	else if (((char *)ast->content)[0] == '<')
-		fd = 0;
-	if ((rightfd = parse_ast_redirection_right(ast)) == -1)
+		fd[0] = 0;
+	if ((fd[1] = parse_ast_redirection_right(ast)) == -1)
 		return (0);
-	if (!parse_ast_redirection_kernel(ast, shell, fd, rightfd, cur_job))
+	if (!parse_ast_redirection_kernel(ast, shell, fd, cur_job))
 		return (0);
 	return (1);
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   msh_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:21 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 14:30:21 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 static int			check_dir_err(char *pathname)
 {
@@ -99,7 +99,8 @@ static void			change_dir_two_args(char **args, char *pwd)
 	free(path);
 }
 
-void				change_dir(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void				change_dir(char **args,\
+char **vars __attribute__((unused)), t_shell *shell)
 {
 	char			*oldpwd;
 	char			*pwd;

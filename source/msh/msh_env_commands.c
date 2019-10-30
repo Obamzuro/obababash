@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_set_comm.c                                     :+:      :+:    :+:   */
+/*   msh_env_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 14:17:10 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 15:31:03 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
-void				ft_set_comm(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void				ft_set_comm(char **args,\
+char **vars __attribute__((unused)), t_shell *shell)
 {
 	print_env(args, &shell->internal);
 	ft_printf("/-------------------------------\\\n");
@@ -39,7 +40,8 @@ void				ft_export_comm(char **args, char **vars, t_shell *shell)
 	push_variables_into_env(shell, vars, &shell->env, NULL);
 }
 
-void				ft_unset_comm(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void				ft_unset_comm(char **args,\
+char **vars __attribute__((unused)), t_shell *shell)
 {
 	unset_env(args, &shell->internal);
 	unset_env(args, &shell->env);

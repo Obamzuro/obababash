@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/27 18:16:59 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 21:06:59 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 /*
 ** void				print_ast(t_ast *ast)
@@ -90,7 +90,8 @@ static int			handle_commands(char **args, char **vars,
 	return (1);
 }
 
-void				push_variables_into_env(t_shell *shell, char **args, char ***env, char ***dop_env)
+void				push_variables_into_env(t_shell *shell, char **args,\
+char ***env, char ***dop_env)
 {
 	int		i;
 	char	*key;
@@ -122,23 +123,19 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 
 	command_token = (t_command_token *)ast->content;
 	vars = command_token->vars;
-
 	globbing(&(((t_command_token *)ast->content)->args));
 	args = command_token->args;
-
 	tilde_expansion(shell, args);
 	if (env_expansion(shell, args))
 		return (0);
 	backslash_handling(&command_token->args);
 //	quote_removing(shell, args);
 	args = command_token->args;
-
 	tilde_expansion(shell, vars);
 	if (env_expansion(shell, vars))
 		return (0);
 	backslash_handling(&vars);
 //	quote_removing(shell, vars);
-
 	if (!args[0])
 	{
 		push_variables_into_env(shell, vars, &shell->internal, &shell->env);
@@ -147,8 +144,7 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 //	get_child_variables(shell, &ast->content);
 	if (!handle_commands(args, vars, shell))
 	{
-		// HMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-		push_variables_into_env(shell, shell->env, &vars, NULL);
+		push_variables_into_env(shell, shell->env, &vars, NULL);// HMMMMMMMMMM
 		((t_command_token *)ast->content)->vars = vars;
 		if (needfork)
 		{
@@ -168,20 +164,24 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	return (ret);
 }
 
-int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
+int					parse_ast(t_ast *ast, t_shell *shell, int needfork,\
+t_job *cur_job)
 {
+	t_job	*job;
+
 	if (!ast)
 		return (-1);
 	if (!cur_job)
 	{
 		cur_job = (t_job *)ft_memalloc(sizeof(t_job));
-		ft_strncpy(cur_job->command, last_command, sizeof(cur_job->command) - 1);
+		ft_strncpy(cur_job->command, g_last_command,\
+		sizeof(cur_job->command) - 1);
 		cur_job->foreground = 1;
-		if (!first_job)
-			first_job = cur_job;
+		if (!g_first_job)
+			g_first_job = cur_job;
 		else
 		{
-			t_job *job = first_job;
+			job = g_first_job;
 			while (job->next)
 				job = job->next;
 			job->next = cur_job;
@@ -196,12 +196,12 @@ int					parse_ast(t_ast *ast, t_shell *shell, int needfork, t_job *cur_job)
 	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "&&"))
 	{
-		if (!parse_ast(ast->left, shell, 1, cur_job))
+		if (parse_ast(ast->left, shell, 1, cur_job))
 			parse_ast(ast->right, shell, 1, NULL);
 	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "||"))
 	{
-		if (parse_ast(ast->left, shell, 1, cur_job))
+		if (!parse_ast(ast->left, shell, 1, cur_job))
 			parse_ast(ast->right, shell, 1, NULL);
 	}
 	else if (ast->type == OPERATOR && ft_strequ(ast->content, "|"))

@@ -1,4 +1,16 @@
-# include "twenty_one_sh.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   additional.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "forty_two_sh.h"
 
 void		add_process_to_job(t_job *job, pid_t pid)
 {
@@ -10,14 +22,12 @@ void		add_process_to_job(t_job *job, pid_t pid)
 	{
 		job->first_process = (t_process *)ft_memalloc(sizeof(t_process));
 		job->first_process->pid = pid;
-
 //		if (!job->pgid)
 //		{
 //			job->pgid = pid;
 //			setpgid(pid, job->pgid);
 //			tcsetpgrp(STDIN_FILENO, job->pgid);
 //		}
-
 		return ;
 	}
 	if (process->pid == pid)
@@ -49,7 +59,7 @@ int			mark_process_status(pid_t pid, int status)
 
 	if (pid > 0)
 	{
-		j = first_job;
+		j = g_first_job;
 		while (j)
 		{
 			p = j->first_process;
@@ -64,7 +74,8 @@ int			mark_process_status(pid_t pid, int status)
 					{
 						p->completed = 1;
 						if (WIFSIGNALED(status))
-							ft_fprintf(STDERR_FILENO, "%d: Terminated by signal %d.\n", (int)pid, WTERMSIG(p->status));
+							ft_fprintf(STDERR_FILENO,\
+							"%d: Terminated by signal %d.\n", (int)pid, WTERMSIG(p->status));
 					}
 					return (0);
 				}
@@ -109,12 +120,12 @@ int			job_is_completed(t_job *j)
 	return (1);
 }
 
-void		print_processes()
+void		print_processes(void)
 {
 	t_job		*job;
 	t_process	*process;
 
-	job = first_job;
+	job = g_first_job;
 	while (job)
 	{
 		process = job->first_process;
@@ -135,15 +146,15 @@ void		wait_for_job(t_job *job)
 
 //	print_processes();
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
-			if (pid == -1)
-				perror("waitpid error: ");
+	if (pid == -1)
+		perror("waitpid error: ");
 	while (!mark_process_status(pid, status) &&
 				!job_is_stopped(job) &&
 				!job_is_completed(job))
 	{
-			pid = waitpid(WAIT_ANY, &status, WUNTRACED);
-			if (pid == -1)
-				perror("waitpid error: ");
+		pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+		if (pid == -1)
+			perror("waitpid error: ");
 	}
 }
 
@@ -191,7 +202,7 @@ void		do_job_notification(void)
 	t_process	*p2;
 
 	jlast = NULL;
-	j = first_job;
+	j = g_first_job;
 //	print_processes();
 	update_status();
 	while (j)
@@ -200,11 +211,12 @@ void		do_job_notification(void)
 		if (job_is_completed(j))
 		{
 			if (!j->foreground)
-				ft_fprintf(STDERR_FILENO, "%ld: completed\n", j->pgid ? j->pgid : (j->first_process ? j->first_process->pid : 0));
+				ft_fprintf(STDERR_FILENO, "%ld: completed\n",\
+				j->pgid ? j->pgid : (j->first_process ? j->first_process->pid : 0));
 			if (jlast)
 				jlast->next = jnext;
 			else
-				first_job = jnext;
+				g_first_job = jnext;
 			p = j->first_process;
 			p2 = p;
 			while (p)

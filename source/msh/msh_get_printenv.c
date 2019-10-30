@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   msh_get_printenv.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:51 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/20 14:41:19 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 char		*get_env(char *key, char **env)
 {
@@ -52,7 +52,7 @@ char		*get_envs(char *key, int amount_envs, ...)
 	return (NULL);
 }
 
-void		print_env(char **args __attribute__ ((unused)), char ***env)
+void		print_env(char **args __attribute__((unused)), char ***env)
 {
 	int		i;
 

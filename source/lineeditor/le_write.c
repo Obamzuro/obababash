@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   le_write.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:06:47 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/24 14:09:57 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 static void			write_line_chcurpos_kernel(t_lineeditor *lineeditor,
 		char *str)

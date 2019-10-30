@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 18:19:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:56:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int					glob_standard(char *filename, char *pattern)
 		return (0);
 	if (!*(filename + 1) && !*(pattern + 1))
 		return (1);
-//	if (!*(filename + 1))
-//		return (0);
 	if (!*(pattern + 1))
 		return (0);
 	return (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1));
@@ -31,8 +29,6 @@ int					glob_one_char(char *filename, char *pattern)
 {
 	if (!*(pattern + 1) && !*(filename + 1))
 		return (1);
-//	if (!*(filename + 1))
-//		return (0);
 	if (!*(pattern + 1))
 		return (0);
 	return (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1));
@@ -40,7 +36,6 @@ int					glob_one_char(char *filename, char *pattern)
 
 int					glob_wildcard(char *filename, char *pattern)
 {
-//	ft_printf("%15s | %15s\n", filename, pattern);
 	if (!*(pattern + 1))
 		return (1);
 	if (!*filename && *(pattern + 1))
@@ -75,7 +70,6 @@ char				**glob_interval_get_intervals(char **pattern)
 {
 	t_ftvector	intervals;
 	char		*interval;
-	char		**ret;
 	char		beg;
 	char		end;
 
@@ -157,8 +151,6 @@ int					glob_interval(char *filename, char *pattern)
 	free_double_arr(intervals);
 	if (!*(filename + 1) && !*(pattern + 1))
 		return (1);
-//	if (!*(filename + 1))
-//		return (0);
 	if (!*(pattern + 1))
 		return (0);
 	return (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1));
@@ -176,7 +168,7 @@ int					(*g_return_glob_func(char *pattern))(char *, char *)
 	int		i;
 
 	i = 0;
-	while (i < sizeof(g_globs) / sizeof(*g_globs))
+	while ((unsigned long)i < sizeof(g_globs) / sizeof(*g_globs))
 	{
 		if (*pattern == g_globs[i].character)
 			return (g_globs[i].func);
@@ -252,7 +244,7 @@ int					is_globbing_need(char *arg)
 		j = 0;
 		if (arg[i] == '$')
 			return (0);
-		while (j < sizeof(g_globs) / sizeof(*g_globs))
+		while ((unsigned long)j < sizeof(g_globs) / sizeof(*g_globs))
 		{
 			if (arg[i] == g_globs[j].character)
 				teoretical = 1;
@@ -270,7 +262,6 @@ char				**globbing_arg(char *arg)
 {
 	int			i;
 	int			j;
-	int			k;
 	int			amount_of_matches;
 	t_glob_file	**files;
 	char		**ret;
@@ -322,7 +313,6 @@ char				**globbing_arg(char *arg)
 	ret[j] = NULL;
 	free(files);
 	return (ret);
-	//g_return_glob_func();
 }
 
 void				free_args(t_ftvector *all_args)
@@ -338,7 +328,6 @@ void				free_args(t_ftvector *all_args)
 		j = -1;
 		while (args[++j])
 			free(args[j]);
-//		free(args);
 		++i;
 	}
 	free_ftvector(all_args);

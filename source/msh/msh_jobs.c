@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:38:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:47:58 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void			ft_jobs(char **args, char **vars __attribute__((unused)),\
 t_shell *shell)
 {
 	t_job		*j;
-	t_process	*p;
 	int			i;
 
 	j = g_first_job;
@@ -30,6 +29,8 @@ t_shell *shell)
 		j = j->next;
 		++i;
 	}
+	(void)args;
+	(void)shell;
 }
 
 void			ft_fg(char **args, char **vars __attribute__((unused)),\
@@ -72,6 +73,7 @@ t_shell *shell)
 	}
 	j->notified = 0;
 	put_job_in_foreground(j, 1);
+	(void)shell;
 }
 
 void			ft_bg(char **args, char **vars __attribute__((unused)),\
@@ -114,4 +116,5 @@ t_shell *shell)
 	}
 	j->notified = 0;
 	put_job_in_background(j, 1);
+	(void)shell;
 }

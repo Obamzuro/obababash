@@ -1,28 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hash_comm.c                                        :+:      :+:    :+:   */
+/*   _hlp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/27 19:08:35 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:50:47 by akyrychu         ###   ########.fr       */
+/*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
+/*   Updated: 2019/10/31 00:19:14 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "forty_two_sh.h"
 
-void				hash_comm(char **args, char **vars, t_shell *shell)
-{
-	int		i;
-
-	i = 0;
-	while (i < g_hash->len)
-	{
-		ft_printf("%s\n", g_hash->elem[i]);
-		++i;
-	}
-	(void)shell;
-	(void)args;
-	(void)vars;
-}

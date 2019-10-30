@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:14:03 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:42:48 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,5 +399,16 @@ char				*parameter_expansion_sharp_small_character(char *str,\
 char *pattern);
 char				*parameter_expansion_sharp_big_character(char *str,\
 char *pattern);
+char				*parameter_expansion_sharp_small_wildchard(char *str,\
+char *pattern);
+char				*parameter_expansion_sharp_big_wildchard(char *str,\
+char *pattern);
+char				*parameter_expansion_colon(char *key, char **env);
+char				*parameter_expansion_procent_small(char *key,\
+char *additional, char **env);
+char				*parameter_expansion_sharp_small(char *key,\
+char *additional, char **env);
+char				*parameter_expansion_sharp_big(char *key, char *additional,\
+char **env);
 
 #endif

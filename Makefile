@@ -6,7 +6,7 @@
 #    By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/30 20:48:37 by akyrychu         ###   ########.fr        #
+#    Updated: 2019/10/31 00:43:04 by akyrychu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,9 +59,12 @@ SRCNAME = main.c	\
 		  additional.c\
 		  globbing.c\
 		  parameter_expansion_dedicated.c\
+		  parameter_expansion_dedicated_hlp2.c\
+		  parameter_expansion_dedicated_hlp3.c\
+		  parameter_expansion_dedicated_hlp4.c\
 		  command_substition.c
 
-FLAGS = -g# -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 
 SRC = $(addprefix source/, $(SRCNAME))
 

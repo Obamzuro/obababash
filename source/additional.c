@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:53:15 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void		add_process_to_job(t_job *job, pid_t pid)
 {
-	int			i;
 	t_process	*process;
 
 	process = job->first_process;
@@ -22,12 +21,6 @@ void		add_process_to_job(t_job *job, pid_t pid)
 	{
 		job->first_process = (t_process *)ft_memalloc(sizeof(t_process));
 		job->first_process->pid = pid;
-//		if (!job->pgid)
-//		{
-//			job->pgid = pid;
-//			setpgid(pid, job->pgid);
-//			tcsetpgrp(STDIN_FILENO, job->pgid);
-//		}
 		return ;
 	}
 	if (process->pid == pid)
@@ -40,16 +33,6 @@ void		add_process_to_job(t_job *job, pid_t pid)
 	}
 	process->next = (t_process *)ft_memalloc(sizeof(t_process));
 	process->next->pid = pid;
-	///////////////
-//	ft_printf("RAKDO %d", job->pgid);
-//	if (!job->pgid)
-//	{
-//		ft_printf("RAK");
-//		job->pgid = pid;
-//		setpgid(pid, job->pgid);
-//		tcsetpgrp(STDIN_FILENO, job->pgid);
-//	}
-//	//////////////////
 }
 
 int			mark_process_status(pid_t pid, int status)

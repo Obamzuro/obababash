@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 21:06:59 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:52:52 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,12 @@ char ***env, char ***dop_env)
 		free(value);
 		++i;
 	}
+	(void)shell;
 }
 
 int					parse_ast_command(t_ast *ast, t_shell *shell,
 		int needfork, t_job *cur_job)
 {
-	int					ret;
-	char				**variables;
 	t_command_token		*command_token;
 	char				**args;
 	char				**vars;
@@ -129,39 +128,29 @@ int					parse_ast_command(t_ast *ast, t_shell *shell,
 	if (env_expansion(shell, args))
 		return (0);
 	backslash_handling(&command_token->args);
-//	quote_removing(shell, args);
 	args = command_token->args;
 	tilde_expansion(shell, vars);
 	if (env_expansion(shell, vars))
 		return (0);
 	backslash_handling(&vars);
-//	quote_removing(shell, vars);
 	if (!args[0])
 	{
 		push_variables_into_env(shell, vars, &shell->internal, &shell->env);
 		return (0);
 	}
-//	get_child_variables(shell, &ast->content);
 	if (!handle_commands(args, vars, shell))
 	{
-		push_variables_into_env(shell, shell->env, &vars, NULL);// HMMMMMMMMMM
+		push_variables_into_env(shell, shell->env, &vars, NULL);
 		((t_command_token *)ast->content)->vars = vars;
 		if (needfork)
 		{
 			if (ft_exec(args, &vars, 1, cur_job) == -1)
 				return (-1);
-//			if (cur_job->foreground)
-//				while (wait(&ret) == -1)
-//					;
-//			else
-//			{
-//				cur_job->pgid = 
-//			}
 		}
 		else if (ft_exec(args, &vars, 0, cur_job) == -1)
 			return (-1);
 	}
-	return (ret);
+	return (0);
 }
 
 int					parse_ast(t_ast *ast, t_shell *shell, int needfork,\

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   twenty_one_sh.h                                    :+:      :+:    :+:   */
+/*   forty_two_sh.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __TWENTY_ONE_SH_H
-# define __TWENTY_ONE_SH_H
+#ifndef __FORTY_TWO_SH_H
+# define __FORTY_TWO_SH_H
 
 # include <curses.h>
 # include <term.h>

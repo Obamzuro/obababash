@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:47:11 by obamzuro          #+#    #+#             */
-/*   Updated: 2018/09/25 20:19:45 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "twenty_one_sh.h"
+#include "forty_two_sh.h"
 
 void				history_append(char *command,
 		t_history *history, int appendmode)

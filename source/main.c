@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:03:00 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,31 +77,6 @@ static char		*lineediting(t_shell *shell)
 char			*g_last_command;
 t_ftvector		*g_hash;
 
-//void					alias_expansion_token()
-//{
-//
-//}
-//
-//void					alias_expansion()
-//{
-//	int			i;
-//	t_token		*token;
-//
-//	i = 0;
-//	while (1)
-//	{
-//		token = (t_token *)(g_shell->lexer->tokens.elem[i]);
-//		if (!token || token->type != WORD)
-//			return ;
-//		get_env(token->str, g_shell->aliases);
-//		alias_expansion_token();
-//		if (!ft_strlen(token->str)\
-//|| token->str[ft_strlen(token->str) - 1] != ' ')
-//			return ;
-//		++i;
-//	}
-//}
-
 static int		lexing(t_shell *shell, char *command)
 {
 	if (g_last_command)
@@ -126,7 +101,6 @@ static int		lexing(t_shell *shell, char *command)
 		shell->history.commands[shell->history.last] = 0;
 		return (-1);
 	}
-//	alias_expansion();
 	return (0);
 }
 
@@ -180,13 +154,10 @@ static void		preparation(t_shell *shell)
 	ft_bzero(&shell->history, sizeof(shell->history));
 	while (tcgetpgrp(shell->initfd.fdin) != (shell_pgid = getpgrp()))
 		kill(-shell_pgid, SIGTTIN);
-//	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
-//	signal(SIGCHLD, SIG_IGN);
-//	signal(SIGSTOP, SIG_IGN);
 	shell_pgid = getpid();
 	shell->pgid = shell_pgid;
 	if (setpgid(shell_pgid, shell_pgid) < 0)
@@ -206,7 +177,6 @@ static void		preparation(t_shell *shell)
 
 t_shell			*g_shell;
 t_job			*g_first_job = NULL;
-//t_list					*g_aliases = NULL;
 
 int				main(void)
 {

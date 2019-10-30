@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 18:19:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:56:03 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:09:01 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,7 @@ t_glob_file			**generate_files(void)
 	DIR				*dir;
 	struct dirent	*dp;
 	char			*current_dir;
-	int				amount_of_files;
-	int				i;
+	int				amnt_files[2];
 
 	current_dir = getcwd(0, 0);
 	dir = opendir(current_dir);
@@ -194,9 +193,9 @@ t_glob_file			**generate_files(void)
 		"42sh: can't access current directory for globbing\n");
 		return (NULL);
 	}
-	amount_of_files = 0;
+	amnt_files[0] = 0;
 	while ((dp = readdir(dir)) != NULL)
-		++amount_of_files;
+		++amnt_files[0];
 	closedir(dir);
 	dir = opendir(current_dir);
 	free(current_dir);
@@ -207,27 +206,27 @@ t_glob_file			**generate_files(void)
 		return (NULL);
 	}
 	files = (t_glob_file **)malloc(sizeof(t_glob_file *) *\
-	(amount_of_files + 1));
-	i = 0;
+	(amnt_files[0] + 1));
+	amnt_files[1] = 0;
 	while ((dp = readdir(dir)) != NULL)
 	{
-		files[i] = (t_glob_file *)malloc(sizeof(t_glob_file));
-		files[i]->name = ft_strdup(dp->d_name);
-		files[i]->mark = MATCH;
-		++i;
+		files[amnt_files[1]] = (t_glob_file *)malloc(sizeof(t_glob_file));
+		files[amnt_files[1]]->name = ft_strdup(dp->d_name);
+		files[amnt_files[1]]->mark = MATCH;
+		++amnt_files[1];
 	}
 	closedir(dir);
-	if (i != amount_of_files)
+	if (amnt_files[1] != amnt_files[0])
 	{
-		while (i != amount_of_files)
+		while (amnt_files[1] != amnt_files[0])
 		{
-			files[i] = (t_glob_file *)malloc(sizeof(t_glob_file));
-			files[i]->name = NULL;
-			files[i]->mark = WASDELETED;
-			++i;
+			files[amnt_files[1]] = (t_glob_file *)malloc(sizeof(t_glob_file));
+			files[amnt_files[1]]->name = NULL;
+			files[amnt_files[1]]->mark = WASDELETED;
+			++amnt_files[1];
 		}
 	}
-	files[i] = NULL;
+	files[amnt_files[1]] = NULL;
 	return (files);
 }
 

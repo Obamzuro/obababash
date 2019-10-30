@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:46:57 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int					parse_ast_redirection_right(t_ast *ast)
 		rightfd = ft_atoi(binary_token->right);
 	if (rightfd == -1)
 	{
-		ft_fprintf(2, "21sh: parse_redirection error\n", binary_token->right);
+		ft_fprintf(2, "42sh: parse_redirection error\n", binary_token->right);
 		return (-1);
 	}
 	return (rightfd);
@@ -44,7 +44,7 @@ static int					parse_ast_redirection_kernel_heredoc(t_ast *ast,
 
 	if (pipe(pipefd) == -1)
 	{
-		ft_fprintf(2, "21sh: pipe creating error");
+		ft_fprintf(2, "42sh: pipe creating error");
 		return (0);
 	}
 	dup2(pipefd[0], fd);
@@ -114,7 +114,7 @@ int							parse_ast_redirection(t_ast *ast, t_shell *shell,
 		pid = fork();
 		if (pid < 0)
 		{
-			ft_fprintf(2, "21sh: fork error\n");
+			ft_fprintf(2, "42sh: fork error\n");
 			return (0);
 		}
 		if (!pid)

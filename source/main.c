@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ static void		preparation(t_shell *shell)
 		(shell->initfd.fdout = dup(1)) == -1 ||
 		(shell->initfd.fderr = dup(2)) == -1)
 	{
-		ft_fprintf(2, "21sh: dup() error\n");
+		ft_fprintf(2, "42sh: dup() error\n");
 		exit(EXIT_FAILURE);
 	}
 	shell->lexer = (t_lexer *)malloc(sizeof(t_lexer));
@@ -191,7 +191,7 @@ static void		preparation(t_shell *shell)
 	shell->pgid = shell_pgid;
 	if (setpgid(shell_pgid, shell_pgid) < 0)
 	{
-		ft_fprintf(2, "21sh: Couldn't put shell in its own groupr\n");
+		ft_fprintf(2, "42sh: Couldn't put shell in its own groupr\n");
 		exit(EXIT_FAILURE);
 	}
 	tcsetpgrp(shell->initfd.fdin, shell_pgid);
@@ -199,7 +199,7 @@ static void		preparation(t_shell *shell)
 	if (sigaction(SIGINT, &act, 0) == -1 ||
 		sigaction(SIGWINCH, &act, 0) == -1)
 	{
-		ft_fprintf(2, "21sh: sigaction error\n");
+		ft_fprintf(2, "42sh: sigaction error\n");
 		exit(EXIT_FAILURE);
 	}
 }

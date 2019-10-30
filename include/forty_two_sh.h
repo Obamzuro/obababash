@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:36:12 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:03:17 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,4 +397,8 @@ void				ft_unalias(char **args, char **vars, t_shell *shell);
 
 int					creating_ast(t_shell *shell);
 int					command_substition(char **command);
+
+char				*parameter_expansion_sharp_small_character(char *str, char *pattern);
+char				*parameter_expansion_sharp_big_character(char *str, char *pattern);
+
 #endif

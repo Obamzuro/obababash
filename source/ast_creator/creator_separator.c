@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 16:35:41 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_ast		*create_separator_ast_pipe(int beg,
 	if ((pos = last_token_pos(lexer, beg, end, g_separator_op[1])) == -1)
 		return (create_redirection_ast(lexer, beg, end, shell));
 	if (pos == beg || pos + 1 > end)
-		return (print_error_zero("21sh: parse operator error\n"));
+		return (print_error_zero("42sh: parse operator error\n"));
 	ast = (t_ast *)ft_memalloc(sizeof(t_ast));
 	ast->content = ft_strdup(((t_token *)lexer->tokens.elem[pos])->str);
 	ast->type = OPERATOR;
@@ -57,7 +57,7 @@ static t_ast		*create_separator_ast_logical(int beg,
 	if ((pos = first_token_pos(lexer, beg, end, g_separator_op[2])) == -1)
 		return (create_separator_ast_pipe(beg, end, shell));
 	if (pos == beg || pos + 1 > end)
-		return (print_error_zero("21sh: parse operator [&&  ||] error\n"));
+		return (print_error_zero("42sh: parse operator [&&  ||] error\n"));
 	ast = (t_ast *)ft_memalloc(sizeof(t_ast));
 	ast->content = ft_strdup(((t_token *)lexer->tokens.elem[pos])->str);
 	ast->type = OPERATOR;

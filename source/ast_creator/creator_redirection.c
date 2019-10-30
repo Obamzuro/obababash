@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 13:07:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_ast				*create_redirection_ast(t_lexer *lexer, int beg,
 	if (lexer->tokens.len <= pos + 1 || pos + 1 > end
 			|| ((t_token *)lexer->tokens.elem[pos + 1])->type == OPERATOR)
 	{
-		ft_fprintf(2, "21sh: parse error - redirection word\n");
+		ft_fprintf(2, "42sh: parse error - redirection word\n");
 		free_ast(ast);
 		return (0);
 	}

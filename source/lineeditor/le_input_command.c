@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:06:37 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static void					input_command_prep(t_lineeditor *lineeditor,
 			!lineeditor->ws.ws_col ||
 			!lineeditor->ws.ws_row)
 	{
-		ft_fprintf(STDERR_FILENO, "21sh: getWinSize error\n");
+		ft_fprintf(STDERR_FILENO, "42sh: getWinSize error\n");
 		exit(EXIT_FAILURE);
 	}
 	lineeditor->selected[0] = -1;

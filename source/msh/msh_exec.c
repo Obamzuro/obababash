@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:33 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char		*ft_exec_path_find_comm(char **args, char **paths)
 			{
 				if (access(temp, X_OK) == -1)
 				{
-					ft_fprintf(2, "21sh: Permission denied: %s\n", args[0]);
+					ft_fprintf(2, "42sh: Permission denied: %s\n", args[0]);
 					return (0);
 				}
 				else
@@ -46,7 +46,7 @@ static char		*ft_exec_path_find_comm(char **args, char **paths)
 		{
 			if (access(temp, X_OK) == -1)
 			{
-				ft_fprintf(2, "21sh: Permission denied: %s\n", args[0]);
+				ft_fprintf(2, "42sh: Permission denied: %s\n", args[0]);
 				free(temp);
 				return (0);
 			}
@@ -59,7 +59,7 @@ static char		*ft_exec_path_find_comm(char **args, char **paths)
 		free(temp);
 		++i;
 	}
-	ft_fprintf(2, "21sh: command not found: %s\n", args[0]);
+	ft_fprintf(2, "42sh: command not found: %s\n", args[0]);
 	return (0);
 }
 
@@ -73,7 +73,7 @@ static char		*ft_exec_path(char **args, char ***env)
 	i = 0;
 	if (!paths)
 	{
-		ft_fprintf(2, "21sh: command not found: %s\n", args[0]);
+		ft_fprintf(2, "42sh: command not found: %s\n", args[0]);
 		return (0);
 	}
 	ret = ft_exec_path_find_comm(args, paths);
@@ -89,7 +89,7 @@ static int		ft_exec_check_err(char **args, char *comm)
 		return (-1);
 	if (lstat(comm, &tempstat) == -1)
 	{
-		ft_fprintf(2, "21sh: no such file or directory: %s\n", comm);
+		ft_fprintf(2, "42sh: no such file or directory: %s\n", comm);
 		if (comm != args[0])
 			free(comm);
 		return (-1);
@@ -97,9 +97,9 @@ static int		ft_exec_check_err(char **args, char *comm)
 	if (!S_ISREG(tempstat.st_mode) || access(comm, X_OK) == -1)
 	{
 		if (S_ISDIR(tempstat.st_mode))
-			ft_fprintf(2, "21sh: %s: is a directory\n", comm);
+			ft_fprintf(2, "42sh: %s: is a directory\n", comm);
 		else
-			ft_fprintf(2, "21sh: Permission denied: %s\n", comm);
+			ft_fprintf(2, "42sh: Permission denied: %s\n", comm);
 		if (comm != args[0])
 			free(comm);
 		return (-1);
@@ -128,13 +128,13 @@ t_job *cur_job)
 		signal(SIGCHLD, SIG_DFL);
 		if (execve(comm, args, *env) == -1)
 		{
-			ft_fprintf(2, "21sh: File execution error: %s\n", comm);
+			ft_fprintf(2, "42sh: File execution error: %s\n", comm);
 			return (-1);
 		}
 	}
 	else if (pid < 0)
 	{
-		ft_fprintf(2, "21sh: Error creating a child thread\n");
+		ft_fprintf(2, "42sh: Error creating a child thread\n");
 		return (-1);
 	}
 	add_process_to_job(cur_job, pid);
@@ -161,7 +161,7 @@ int				ft_exec(char **args, char ***env, int forkneed, t_job *cur_job)
 	if (forkneed)
 		ret = ft_exec_fork(args, env, comm, cur_job);
 	else if ((ret = execve(comm, args, *env) == -1))
-		ft_fprintf(2, "21sh: File execution error: %s\n", comm);
+		ft_fprintf(2, "42sh: File execution error: %s\n", comm);
 	if (comm != args[0])
 		free(comm);
 	return (ret);

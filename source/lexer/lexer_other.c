@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:57:53 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int			lexing_handling_end_pipemore(t_shell *shell,
 			|| shell->reading_mode == READEND)
 	{
 		if (shell->reading_mode == READEND)
-			ft_printf("\n21sh: syntax error: unexpected eof\n");
+			ft_printf("\n42sh: syntax error: unexpected eof\n");
 		free_lineeditor(&shell->lineeditor);
 		return (-1);
 	}

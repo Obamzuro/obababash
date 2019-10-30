@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 14:25:20 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ void	term_associate(void)
 	termtype = getenv("TERM");
 	if (!termtype)
 	{
-		ft_fprintf(2, "21sh: Can't find an env TERM\n");
+		ft_fprintf(2, "42sh: Can't find an env TERM\n");
 		exit(EXIT_FAILURE);
 	}
 	success = tgetent(0, termtype);
 	if (success < 0)
 	{
-		ft_fprintf(2, "21sh: Can't access the termcap data base\n");
+		ft_fprintf(2, "42sh: Can't access the termcap data base\n");
 		exit(EXIT_FAILURE);
 	}
 	if (!success)
 	{
-		ft_fprintf(2, "21sh: Terminal type '%s' is not defined\n", termtype);
+		ft_fprintf(2, "42sh: Terminal type '%s' is not defined\n", termtype);
 		exit(EXIT_FAILURE);
 	}
 }

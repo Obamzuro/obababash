@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:46:18 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 18:27:19 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int			parse_ast_pipe_child(t_ast *ast, t_shell *shell,
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_fprintf(2, "21sh: Error creating subprocess");
+		ft_fprintf(2, "42sh: Error creating subprocess");
 		return (-1);
 	}
 	if (!pid)
@@ -69,7 +69,7 @@ int					parse_ast_pipe(t_ast *ast, t_shell *shell, t_job *cur_job)
 	pid_t		pid[2];
 
 	if (pipe(fdpipe) == -1)
-		return ((int64_t)print_error_zero("21sh: pipe creating error"));
+		return ((int64_t)print_error_zero("42sh: pipe creating error"));
 	if ((pid[0] = parse_ast_pipe_child(ast, shell, fdpipe, 0, cur_job)) == -1)
 	{
 		close(fdpipe[0]);

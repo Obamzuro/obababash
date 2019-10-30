@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 17:17:25 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 17:22:49 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:09:56 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,14 +174,14 @@ t_job *cur_job)
 	if (!cur_job)
 	{
 		cur_job = (t_job *)ft_memalloc(sizeof(t_job));
-		ft_strncpy(cur_job->command, last_command,\
+		ft_strncpy(cur_job->command, g_last_command,\
 		sizeof(cur_job->command) - 1);
 		cur_job->foreground = 1;
-		if (!first_job)
-			first_job = cur_job;
+		if (!g_first_job)
+			g_first_job = cur_job;
 		else
 		{
-			job = first_job;
+			job = g_first_job;
 			while (job->next)
 				job = job->next;
 			job->next = cur_job;

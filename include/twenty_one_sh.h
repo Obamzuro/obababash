@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   twenty_one_sh.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/27 19:17:04 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:09:56 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct		s_job
 //	int stdin, stdout, stderr;
 }					t_job;
 
-extern t_job		*first_job;
+extern t_job		*g_first_job;
 
 typedef enum		e_tokentype
 {
@@ -245,7 +245,7 @@ typedef struct		s_esc_corr
 	int		is_selecting : 1;
 }					t_esc_corr;
 
-extern char		*last_command;
+extern char		*g_last_command;
 extern t_shell *g_shell;
 extern t_ftvector *g_hash;
 

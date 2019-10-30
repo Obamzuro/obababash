@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_substition.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/27 18:30:30 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 17:51:35 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 static int		substitute(char **command, int *iter)
 {
-	char		*new_command;
-	char		*end;
-	char		*tmp;
-	char		*tmp2;
-	int			old_stdout;
-	int			fdpipe[2];
+	char	*new_command;
+	char	*end;
+	char	*tmp;
+	char	*tmp2;
+	int		old_stdout;
+	int		fdpipe[2];
+	char	arr[10000];
 
 	end = ft_strchr((*command) + *iter + 2, ')');
 	if (!end)
 		return (-1);
-	new_command = ft_strsub((*command) + *iter + 2, 0, end - (*command) - *iter - 2);
+	new_command = ft_strsub((*command) + *iter + 2, 0, end -\
+	(*command) - *iter - 2);
 	if (pipe(fdpipe) == -1)
 		return (-1);
 	old_stdout = dup(STDOUT_FILENO);
@@ -65,7 +67,6 @@ static int		substitute(char **command, int *iter)
 	free_lexer(g_shell->lexer);
 	free_ast(g_shell->ast);
 	ft_bzero(g_shell->lexer, sizeof(t_lexer));
-	char arr[10000];
 	ft_bzero(arr, sizeof(arr));
 	read(fdpipe[0], arr, sizeof(arr) - 1);
 //	while (read(fdpipe[0], arr, sizeof(arr) - 1) > 0)

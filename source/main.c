@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/27 19:25:17 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:13:22 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void					alias_expansion(char **command)
+void			alias_expansion(char **command)
 {
 	int		i;
 	char	*word;
@@ -24,14 +24,16 @@ void					alias_expansion(char **command)
 	i = 0;
 	while (1)
 	{
-		if (ft_is_char_in_str((*command)[i], " \t\n&|><;\v\r") || !(*command)[i])
+		if (ft_is_char_in_str((*command)[i], " \t\n&|><;\v\r")\
+		|| !(*command)[i])
 		{
 			if ((value = get_env(word, g_shell->aliases)))
 			{
 				separator = (*command)[i];
 				(*command)[i] = '\0';
 				temp = *command;
-				*command = (char *)ft_memalloc(ft_strlen(value) + 1 + ft_strlen((*command) + i + 1) + 1);
+				*command = (char *)ft_memalloc(ft_strlen(value) + 1\
+				+ ft_strlen((*command) + i + 1) + 1);
 				ft_strcpy((*command), value);
 				(*command)[ft_strlen(value)] = separator;
 				ft_strcat((*command), temp + i + 1);
@@ -51,7 +53,7 @@ void					alias_expansion(char **command)
 	free(word);
 }
 
-static char				*lineediting(t_shell *shell)
+static char		*lineediting(t_shell *shell)
 {
 	char		*command;
 
@@ -72,7 +74,7 @@ static char				*lineediting(t_shell *shell)
 	return (command);
 }
 
-char			*last_command;
+char			*g_last_command;
 t_ftvector		*g_hash;
 
 //void					alias_expansion_token()
@@ -93,17 +95,18 @@ t_ftvector		*g_hash;
 //			return ;
 //		get_env(token->str, g_shell->aliases);
 //		alias_expansion_token();
-//		if (!ft_strlen(token->str) || token->str[ft_strlen(token->str) - 1] != ' ')
+//		if (!ft_strlen(token->str)\
+//|| token->str[ft_strlen(token->str) - 1] != ' ')
 //			return ;
 //		++i;
 //	}
 //}
 
-static int				lexing(t_shell *shell, char *command)
+static int		lexing(t_shell *shell, char *command)
 {
-	if (last_command)
-		free(last_command);
-	last_command = ft_strdup(command);
+	if (g_last_command)
+		free(g_last_command);
+	g_last_command = ft_strdup(command);
 	if (command_substition(&command))
 	{
 		ft_fprintf(STDERR_FILENO, "42sh: command substitution error!\n");
@@ -138,7 +141,7 @@ int				creating_ast(t_shell *shell)
 	return (0);
 }
 
-static void				init_env(void)
+static void		init_env(void)
 {
 	char	*value;
 	char	*tmp;
@@ -155,7 +158,7 @@ static void				init_env(void)
 	free(tmp);
 }
 
-static void				preparation(t_shell *shell)
+static void		preparation(t_shell *shell)
 {
 	struct sigaction		act;
 	extern struct termios	g_tty;
@@ -176,7 +179,7 @@ static void				preparation(t_shell *shell)
 	shell->lexer = (t_lexer *)malloc(sizeof(t_lexer));
 	ft_bzero(&shell->history, sizeof(shell->history));
 	while (tcgetpgrp(shell->initfd.fdin) != (shell_pgid = getpgrp()))
-		kill (-shell_pgid, SIGTTIN);
+		kill(-shell_pgid, SIGTTIN);
 //	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
@@ -201,15 +204,15 @@ static void				preparation(t_shell *shell)
 	}
 }
 
-t_shell					*g_shell;
-t_job	*first_job = NULL;
+t_shell			*g_shell;
+t_job			*g_first_job = NULL;
 //t_list					*g_aliases = NULL;
 
-int						main(void)
+int				main(void)
 {
 	char		*command;
 	t_shell		shell;
-	extern char		**environ;
+	extern char	**environ;
 
 	g_shell = &shell;
 	preparation(&shell);

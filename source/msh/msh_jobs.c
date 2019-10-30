@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:38:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/30 17:02:56 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:08:34 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_shell *shell)
 	t_process	*p;
 	int			i;
 
-	j = first_job;
+	j = g_first_job;
 	i = 1;
 	while (j && j->next)
 	{
@@ -50,7 +50,7 @@ t_shell *shell)
 		num_process);
 		return ;
 	}
-	j = first_job;
+	j = g_first_job;
 	i = num_process;
 	--i;
 	while (i && j && j->next)
@@ -92,7 +92,7 @@ t_shell *shell)
 		num_process);
 		return ;
 	}
-	j = first_job;
+	j = g_first_job;
 	i = num_process;
 	--i;
 	while (i && j && j->next)

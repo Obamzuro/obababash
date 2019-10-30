@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   job_join.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 13:28:24 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/08/18 13:48:21 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:05:17 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void		job_join_child()
+void		job_join_child(void)
 {
 	pid_t		pid;
 	t_job		*current_job;
@@ -35,7 +35,7 @@ void		job_join_child()
 	return ;
 }
 
-void		job_join_parent()
+void		job_join_parent(void)
 {
 //	if (!ast->pgid)
 //	{

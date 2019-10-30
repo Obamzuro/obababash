@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   globbing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/06 18:19:31 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/19 18:10:19 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:04:21 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-int			(*return_glob_func(char *filename))(char *, char *);
+int					(*g_return_glob_func(char *filename))(char *, char *);
 
-int glob_standard(char *filename, char *pattern)
+int					glob_standard(char *filename, char *pattern)
 {
 	if (*filename != *pattern)
 		return (0);
@@ -24,10 +24,10 @@ int glob_standard(char *filename, char *pattern)
 //		return (0);
 	if (!*(pattern + 1))
 		return (0);
-	return (return_glob_func(pattern + 1)(filename + 1, pattern + 1));
+	return (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1));
 }
 
-int	glob_one_char(char *filename, char *pattern)
+int					glob_one_char(char *filename, char *pattern)
 {
 	if (!*(pattern + 1) && !*(filename + 1))
 		return (1);
@@ -35,26 +35,26 @@ int	glob_one_char(char *filename, char *pattern)
 //		return (0);
 	if (!*(pattern + 1))
 		return (0);
-	return (return_glob_func(pattern + 1)(filename + 1, pattern + 1));
+	return (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1));
 }
 
-int glob_wildcard(char *filename, char *pattern)
+int					glob_wildcard(char *filename, char *pattern)
 {
 //	ft_printf("%15s | %15s\n", filename, pattern);
 	if (!*(pattern + 1))
 		return (1);
 	if (!*filename && *(pattern + 1))
 		return (0);
-	if (return_glob_func(pattern)(filename + 1, pattern))
+	if (g_return_glob_func(pattern)(filename + 1, pattern))
 		return (1);
-	if (return_glob_func(pattern + 1)(filename, pattern + 1))
+	if (g_return_glob_func(pattern + 1)(filename, pattern + 1))
 		return (1);
-	if (return_glob_func(pattern + 1)(filename + 1, pattern + 1))
+	if (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1))
 		return (1);
 	return (0);
 }
 
-char	**glob_interval_reassemble(t_ftvector *intervals)
+char				**glob_interval_reassemble(t_ftvector *intervals)
 {
 	char		**ret;
 	int			i;
@@ -71,7 +71,7 @@ char	**glob_interval_reassemble(t_ftvector *intervals)
 	return (ret);
 }
 
-char	**glob_interval_get_intervals(char **pattern)
+char				**glob_interval_get_intervals(char **pattern)
 {
 	t_ftvector	intervals;
 	char		*interval;
@@ -121,7 +121,7 @@ char	**glob_interval_get_intervals(char **pattern)
 	return (glob_interval_reassemble(&intervals));
 }
 
-int	glob_interval(char *filename, char *pattern)
+int					glob_interval(char *filename, char *pattern)
 {
 	char	**intervals;
 	char	is_inverse;
@@ -139,7 +139,8 @@ int	glob_interval(char *filename, char *pattern)
 	{
 		if (!intervals[i][1] && *filename == intervals[i][0])
 			break ;
-		else if (intervals[i][1] && (*filename >= intervals[i][0] && *filename <= intervals[i][1]))
+		else if (intervals[i][1] && (*filename >= intervals[i][0]\
+		&& *filename <= intervals[i][1]))
 			break ;
 		++i;
 	}
@@ -160,31 +161,31 @@ int	glob_interval(char *filename, char *pattern)
 //		return (0);
 	if (!*(pattern + 1))
 		return (0);
-	return (return_glob_func(pattern + 1)(filename + 1, pattern + 1));
+	return (g_return_glob_func(pattern + 1)(filename + 1, pattern + 1));
 }
 
-t_char_glob_corr globs[] =
+t_char_glob_corr	g_globs[] =
 {
 	{ '*', glob_wildcard },
 	{ '?', glob_one_char },
 	{ '[', glob_interval },
 };
 
-int			(*return_glob_func(char *pattern))(char *, char *)
+int					(*g_return_glob_func(char *pattern))(char *, char *)
 {
 	int		i;
 
 	i = 0;
-	while (i < sizeof(globs) / sizeof(*globs))
+	while (i < sizeof(g_globs) / sizeof(*g_globs))
 	{
-		if (*pattern == globs[i].character)
-			return (globs[i].func);
+		if (*pattern == g_globs[i].character)
+			return (g_globs[i].func);
 		++i;
 	}
 	return (glob_standard);
 }
 
-t_glob_file	**generate_files(void)
+t_glob_file			**generate_files(void)
 {
 	t_glob_file		**files;
 	DIR				*dir;
@@ -197,7 +198,8 @@ t_glob_file	**generate_files(void)
 	dir = opendir(current_dir);
 	if (!dir)
 	{
-		ft_fprintf(STDERR_FILENO, "42sh: can't access current directory for globbing\n");
+		ft_fprintf(STDERR_FILENO,\
+		"42sh: can't access current directory for globbing\n");
 		return (NULL);
 	}
 	amount_of_files = 0;
@@ -208,10 +210,12 @@ t_glob_file	**generate_files(void)
 	free(current_dir);
 	if (!dir)
 	{
-		ft_fprintf(STDERR_FILENO, "42sh: can't access current directory for globbing\n");
+		ft_fprintf(STDERR_FILENO,\
+		"42sh: can't access current directory for globbing\n");
 		return (NULL);
 	}
-	files = (t_glob_file **)malloc(sizeof(t_glob_file *) * (amount_of_files + 1));
+	files = (t_glob_file **)malloc(sizeof(t_glob_file *) *\
+	(amount_of_files + 1));
 	i = 0;
 	while ((dp = readdir(dir)) != NULL)
 	{
@@ -235,7 +239,7 @@ t_glob_file	**generate_files(void)
 	return (files);
 }
 
-int			is_globbing_need(char *arg)
+int					is_globbing_need(char *arg)
 {
 	int		i;
 	int		j;
@@ -248,9 +252,9 @@ int			is_globbing_need(char *arg)
 		j = 0;
 		if (arg[i] == '$')
 			return (0);
-		while (j < sizeof(globs) / sizeof(*globs))
+		while (j < sizeof(g_globs) / sizeof(*g_globs))
 		{
-			if (arg[i] == globs[j].character)
+			if (arg[i] == g_globs[j].character)
 				teoretical = 1;
 			++j;
 		}
@@ -262,7 +266,7 @@ int			is_globbing_need(char *arg)
 		return (0);
 }
 
-char		**globbing_arg(char *arg)
+char				**globbing_arg(char *arg)
 {
 	int			i;
 	int			j;
@@ -282,7 +286,7 @@ char		**globbing_arg(char *arg)
 	files = generate_files();
 	while (files[i])
 	{
-		if (!return_glob_func(arg)(files[i]->name, arg))
+		if (!g_return_glob_func(arg)(files[i]->name, arg))
 			files[i]->mark = NOTMATCH;
 		++i;
 	}
@@ -318,10 +322,10 @@ char		**globbing_arg(char *arg)
 	ret[j] = NULL;
 	free(files);
 	return (ret);
-	//return_glob_func();
+	//g_return_glob_func();
 }
 
-void		free_args(t_ftvector *all_args)
+void				free_args(t_ftvector *all_args)
 {
 	int		i;
 	int		j;
@@ -340,7 +344,7 @@ void		free_args(t_ftvector *all_args)
 	free_ftvector(all_args);
 }
 
-void		glob_reassemble(char ***args, t_ftvector *all_args)
+void				glob_reassemble(char ***args, t_ftvector *all_args)
 {
 	int		i;
 	int		j;
@@ -380,7 +384,7 @@ void		glob_reassemble(char ***args, t_ftvector *all_args)
 	free_ftvector(all_args);
 }
 
-int			globbing(char ***args)
+int					globbing(char ***args)
 {
 	int			i;
 	t_ftvector	all_args;
@@ -394,7 +398,8 @@ int			globbing(char ***args)
 		if (!glob_filenames)
 		{
 			free_args(&all_args);
-			ft_fprintf(STDERR_FILENO, "42sh: no matches found: %s\n", (*args)[i]);
+			ft_fprintf(STDERR_FILENO, "42sh: no matches found: %s\n",\
+			(*args)[i]);
 			return (-1);
 		}
 		push_ftvector(&all_args, glob_filenames);

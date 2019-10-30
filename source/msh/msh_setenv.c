@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_setenv.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:53:02 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 15:15:46 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 17:00:42 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			set_env_check_existing(char *key, char *value, char **env)
 	return (0);
 }
 
-void				set_env(char *key, char *value, char ***env)
+void		set_env(char *key, char *value, char ***env)
 {
 	int		i;
 	char	**newenv;
@@ -54,7 +54,7 @@ void				set_env(char *key, char *value, char ***env)
 	*env = newenv;
 }
 
-void				set_env_comm(char **args, char ***env)
+void		set_env_comm(char **args, char ***env)
 {
 	if (args[1] == 0 || args[2] == 0)
 	{

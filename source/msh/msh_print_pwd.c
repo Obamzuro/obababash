@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   msh_print_pwd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:58 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/06 19:51:04 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:42:33 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void			print_pwd(char **args, char **vars __attribute__ ((unused)), char ***env)
+void			print_pwd(char **args,\
+char **vars __attribute__((unused)), char ***env)
 {
 	char	*line;
 

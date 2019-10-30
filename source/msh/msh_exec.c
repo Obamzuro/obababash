@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:33 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/27 19:32:38 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 17:07:30 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ static int		ft_exec_check_err(char **args, char *comm)
 	return (0);
 }
 
-static int		ft_exec_fork(char **args, char ***env, char *comm, t_job *cur_job)
+static int		ft_exec_fork(char **args, char ***env, char *comm,\
+t_job *cur_job)
 {
 	pid_t		pid;
 

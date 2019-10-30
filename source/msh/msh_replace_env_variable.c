@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_replace_env_variable.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 12:24:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/19 18:27:28 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 16:28:59 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int			replace_env_variable_repl_end(char **args,
 
 	(void)env;
 	temp = args[i];
-	args[i] = ft_strjoin(temp, get_envs(args[i] + *j + 1, 2, g_shell->internal, env));
+	args[i] = ft_strjoin(temp, get_envs(args[i] + *j + 1, 2,\
+	g_shell->internal, env));
 	free(temp);
 	return (1);
 }
@@ -112,7 +113,8 @@ static int			replace_env_variable_repl_brackets(char **args, char **env,
 	if (!foundstable)
 		return (replace_env_variable_repl_brackets_end(args, env, i, j));
 	else
-		return (replace_env_variable_repl_brackets_middle(&args[i], j, foundstable, env));
+		return (replace_env_variable_repl_brackets_middle(&args[i], j,\
+		foundstable, env));
 }
 
 int					env_expansion_kernel(t_shell *shell,
@@ -130,10 +132,10 @@ int					env_expansion_kernel(t_shell *shell,
 			++j && (dquotemode = !dquotemode);
 		else if (args[i][j] == '\'' && !dquotemode)
 			++j && (squotemode = !squotemode);
-		else if (!squotemode && args[i][j] == '$' && !(j > 0 && args[i][j - 1] == '\\'))
+		else if (!squotemode && args[i][j] == '$' && !(j > 0\
+		&& args[i][j - 1] == '\\'))
 		{
-			// IS NEED???????????????????????????????
-			if (args[i][j + 1] == '{')
+			if (args[i][j + 1] == '{')// IS NEED?
 			{
 				if (replace_env_variable_repl_brackets(args, shell->env, i, &j))
 					return (-1);

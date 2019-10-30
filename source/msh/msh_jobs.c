@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   msh_jobs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obamzuro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:38:29 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/09/26 14:30:47 by obamzuro         ###   ########.fr       */
+/*   Updated: 2019/10/30 17:02:56 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "twenty_one_sh.h"
 
-void			ft_jobs(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void			ft_jobs(char **args, char **vars __attribute__((unused)),\
+t_shell *shell)
 {
 	t_job		*j;
 	t_process	*p;
@@ -31,7 +32,8 @@ void			ft_jobs(char **args, char **vars __attribute__ ((unused)), t_shell *shell
 	}
 }
 
-void			ft_fg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void			ft_fg(char **args, char **vars __attribute__((unused)),\
+t_shell *shell)
 {
 	t_process	*p;
 	t_job		*j;
@@ -44,7 +46,8 @@ void			ft_fg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 		num_process = ft_atoi(args[1]);
 	if (num_process < 1)
 	{
-		ft_fprintf(STDERR_FILENO, "42sh: fg: [%d] wrong argument number!\n", num_process);
+		ft_fprintf(STDERR_FILENO, "42sh: fg: [%d] wrong argument number!\n",\
+		num_process);
 		return ;
 	}
 	j = first_job;
@@ -57,7 +60,8 @@ void			ft_fg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 	}
 	if (!j || !j->next)
 	{
-		ft_fprintf(STDERR_FILENO, "42sh: fg: [%d] wrong argument number!\n", num_process);
+		ft_fprintf(STDERR_FILENO, "42sh: fg: [%d] wrong argument number!\n",\
+		num_process);
 		return ;
 	}
 	p = j->first_process;
@@ -70,7 +74,8 @@ void			ft_fg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 	put_job_in_foreground(j, 1);
 }
 
-void			ft_bg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
+void			ft_bg(char **args, char **vars __attribute__((unused)),\
+t_shell *shell)
 {
 	t_process	*p;
 	t_job		*j;
@@ -83,7 +88,8 @@ void			ft_bg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 		num_process = ft_atoi(args[1]);
 	if (num_process < 1)
 	{
-		ft_fprintf(STDERR_FILENO, "42sh: bg: [%d] wrong argument number!\n", num_process);
+		ft_fprintf(STDERR_FILENO, "42sh: bg: [%d] wrong argument number!\n",\
+		num_process);
 		return ;
 	}
 	j = first_job;
@@ -96,7 +102,8 @@ void			ft_bg(char **args, char **vars __attribute__ ((unused)), t_shell *shell)
 	}
 	if (!j || !j->next)
 	{
-		ft_fprintf(STDERR_FILENO, "42sh: bg: [%d] wrong argument number!\n", num_process);
+		ft_fprintf(STDERR_FILENO, "42sh: bg: [%d] wrong argument number!\n",\
+		num_process);
 		return ;
 	}
 	p = j->first_process;

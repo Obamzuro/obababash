@@ -6,7 +6,7 @@
 #    By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/31 00:43:04 by akyrychu         ###   ########.fr        #
+#    Updated: 2019/10/31 02:29:14 by akyrychu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,8 @@ SRCNAME = main.c	\
 		  expansions.c\
 		  history.c\
 		  additional.c\
+		  additional_hlp.c\
+		  additional_hlp2.c\
 		  globbing.c\
 		  parameter_expansion_dedicated.c\
 		  parameter_expansion_dedicated_hlp2.c\

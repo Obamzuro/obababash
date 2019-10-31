@@ -6,7 +6,7 @@
 #    By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/31 03:52:15 by akyrychu         ###   ########.fr        #
+#    Updated: 2019/10/31 05:42:22 by akyrychu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = 42sh
 
 SRCNAME = main.c	\
 		  msh/init_term.c\
+		  main_hlp.c\
 		  msh/msh_filler.c\
 		  msh/msh_exec.c\
 		  msh/msh_free.c\
@@ -26,6 +27,7 @@ SRCNAME = main.c	\
 		  msh/msh_signal_handler.c\
 		  msh/msh_unsetenv.c\
 		  msh/msh_replace_env_variable.c\
+		  msh/msh_replace_env_variable_hlp.c\
 		  msh/msh_jobs.c\
 		  msh/msh_env_commands.c\
 		  msh/ft_alias.c\
@@ -47,6 +49,7 @@ SRCNAME = main.c	\
 		  lexer/lexer_quote.c\
 		  lexer/lexer_other.c\
 		  parser/parser.c\
+		  parser/parser_hlp.c\
 		  parser/parser_redirection.c\
 		  parser/parser_pipe.c\
 		  ast_creator/creator_separator.c\
@@ -60,6 +63,8 @@ SRCNAME = main.c	\
 		  additional_hlp.c\
 		  additional_hlp2.c\
 		  globbing.c\
+		  globbing_hlp.c\
+		  globbing_hlp2.c\
 		  parameter_expansion_dedicated.c\
 		  parameter_expansion_dedicated_hlp2.c\
 		  parameter_expansion_dedicated_hlp3.c\

@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 03:51:44 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 05:47:14 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,5 +414,28 @@ char **env);
 
 int					mark_process_status(pid_t pid, int status);
 int					substitute(char **command, int *iter);
+int					glob_standard(char *filename, char *pattern);
+int					glob_wildcard(char *filename, char *pattern);
+int					glob_one_char(char *filename, char *pattern);
+int					glob_interval(char *filename, char *pattern);
+t_glob_file			**generate_files(void);
+char				**globbing_arg(char *arg);
+void				free_args(t_ftvector *all_args);
+void				glob_reassemble(char ***args, t_ftvector *all_args);
+char				**glob_interval_get_intervals(char **pattern);
+int					(*g_return_glob_func(char *pattern))(char *, char *);
+int					parser_states(t_ast *ast, t_shell *shell, int needfork,\
+t_job *cur_job);
+int					parser_states_next(t_ast *ast, t_shell *shell,\
+int needfork, t_job *cur_job);
+void				alias_expansion(char **command);
+int					replace_env_variable_repl_brackets(char **args, char **env,
+		int i, int *j);
+int					replace_env_variable_repl_brackets_end(char **args,
+		char **env, int i, int *j);
+int					replace_env_variable_repl_brackets_middle(char **str,
+		int *j, char *foundstable, char **env);
+int					replace_env_variable_repl(char **args, char **env,
+		int i, int *j);
 
 #endif

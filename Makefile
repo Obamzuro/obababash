@@ -6,7 +6,7 @@
 #    By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/11 15:56:03 by obamzuro          #+#    #+#              #
-#    Updated: 2019/10/31 02:29:14 by akyrychu         ###   ########.fr        #
+#    Updated: 2019/10/31 03:52:15 by akyrychu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ SRCNAME = main.c	\
 		  parameter_expansion_dedicated_hlp2.c\
 		  parameter_expansion_dedicated_hlp3.c\
 		  parameter_expansion_dedicated_hlp4.c\
-		  command_substition.c
+		  command_substition.c\
+		  command_substition_hlp.c
 
 FLAGS = -Wall -Wextra -Werror
 

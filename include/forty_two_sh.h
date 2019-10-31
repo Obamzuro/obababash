@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 14:50:56 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 02:27:12 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 03:51:44 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,5 +413,6 @@ char				*parameter_expansion_sharp_big(char *key, char *additional,\
 char **env);
 
 int					mark_process_status(pid_t pid, int status);
+int					substitute(char **command, int *iter);
 
 #endif

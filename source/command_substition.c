@@ -6,11 +6,26 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 03:18:55 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 03:51:58 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "forty_two_sh.h"
+
+static void		sub_help_three(char **command, int *iter, char arr[],\
+char *end)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	*((*command) + *iter) = '\0';
+	tmp = (*command);
+	(*command) = ft_strjoin((*command), arr);
+	tmp2 = (*command);
+	(*command) = ft_strjoin((*command), end + 1);
+	free(tmp);
+	free(tmp2);
+}
 
 static void		sub_help_two(int old_stdout, int fdpipe[], char arr[])
 {
@@ -43,12 +58,10 @@ int *iter)
 	return (-2);
 }
 
-static int		substitute(char **command, int *iter)
+int				substitute(char **command, int *iter)
 {
 	char	*new_command;
 	char	*end;
-	char	*tmp;
-	char	*tmp2;
 	int		old_stdout;
 	int		fdpipe[2];
 	char	arr[10000];
@@ -82,27 +95,6 @@ static int		substitute(char **command, int *iter)
 		return (-1);
 	}
 	sub_help_two(old_stdout, fdpipe, arr);
-	*((*command) + *iter) = '\0';
-	tmp = (*command);
-	(*command) = ft_strjoin((*command), arr);
-	tmp2 = (*command);
-	(*command) = ft_strjoin((*command), end + 1);
-	free(tmp);
-	free(tmp2);
-	return (0);
-}
-
-int				command_substition(char **command)
-{
-	int		i;
-
-	i = 0;
-	while ((*command)[i])
-	{
-		if ((*command)[i] == '$' && (*command)[i + 1] == '(')
-			if (substitute(command, &i) == -1)
-				return (-1);
-		++i;
-	}
+	sub_help_three(command, iter, arr, end);
 	return (0);
 }

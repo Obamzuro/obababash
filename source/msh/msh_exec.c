@@ -6,7 +6,7 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/19 13:52:33 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 00:08:03 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 02:40:56 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static char		*ft_exec_path_find_comm(char **args, char **paths)
 		temp = g_hash->elem[i];
 		if (ft_strequ(args[0], ft_strrchr(temp, '/') + 1))
 		{
-			ft_printf("ALLO\n");
 			if (lstat(temp, &mystat) != -1)
 			{
 				if (access(temp, X_OK) == -1)

@@ -6,13 +6,13 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 12:58:07 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 01:33:11 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 02:51:25 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "forty_two_sh.h"
 
-static int					lexing_handling_quotes_ifnull(t_shell *shell,
+static int					lx_hnd_q_ifnull(t_shell *shell,
 		t_token *token, char **last, char **command)
 {
 	char	*temp;
@@ -41,11 +41,19 @@ static int					lexing_handling_quotes_ifnull(t_shell *shell,
 	return (0);
 }
 
+char						*lx_h_q(char *str, char last)
+{
+	char	*temp;
+
+	temp = ft_chrjoin(str, last);
+	free(str);
+	return (temp);
+}
+
 t_token						*lexing_handling_quotes(t_shell *shell,
 		t_token *token, char **last, char **command)
 {
 	char	delim;
-	char	*temp;
 
 	delim = **last;
 	if (!token)
@@ -61,17 +69,30 @@ t_token						*lexing_handling_quotes(t_shell *shell,
 		}
 		if (!**last)
 		{
-			if (lexing_handling_quotes_ifnull(shell,
-							token, last, command))
+			if (lx_hnd_q_ifnull(shell, token, last, command))
 				return (NULL);
 			else
 				continue;
 		}
-		temp = ft_chrjoin(token->str, **last);
-		free(token->str);
-		token->str = temp;
+		token->str = lx_h_q(token->str, **last);
 	}
 	return (token);
+}
+
+static char					**lx_hnd_bslsh(char **command, t_token **token)
+{
+	if ((!(*command = input_command(&g_shell->lineeditor,\
+	&g_shell->history, '\\', g_shell)) && ft_printf("\n"))\
+	|| g_shell->reading_mode == READEND)
+	{
+		if (g_shell->reading_mode == READEND)
+			ft_printf("\n42sh: syntax error: unexpected eof\n");
+		free((*token)->str);
+		free(token);
+		free_lineeditor(&g_shell->lineeditor);
+		return (NULL);
+	}
+	return (command);
 }
 
 int							lexing_handling_baskslash(t_token **token,
@@ -93,17 +114,8 @@ int							lexing_handling_baskslash(t_token **token,
 		free(*command);
 		ft_putstr("\n\\> ");
 		g_shell->reading_mode = QUOTE;
-		if ((!(*command = input_command(&g_shell->lineeditor,
-						&g_shell->history, '\\', g_shell)) && ft_printf("\n"))
-			|| g_shell->reading_mode == READEND)
-		{
-			if (g_shell->reading_mode == READEND)
-				ft_printf("\n42sh: syntax error: unexpected eof\n");
-			free((*token)->str);
-			free(token);
-			free_lineeditor(&g_shell->lineeditor);
+		if (!(command = lx_hnd_bslsh(command, token)))
 			return (-1);
-		}
 		*last = *command - 1;
 	}
 	else if (*token && (*token)->type == UKNOWN)

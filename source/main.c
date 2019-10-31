@@ -6,18 +6,35 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:05:22 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 01:03:00 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:55:44 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "forty_two_sh.h"
+
+static char		**alias_expansion_help(char **command, int i, char *value)
+{
+	char	*temp;
+	char	separator;
+
+	separator = (*command)[i];
+	(*command)[i] = '\0';
+	temp = *command;
+	*command = (char *)ft_memalloc(ft_strlen(value) + 1\
+	+ ft_strlen((*command) + i + 1) + 1);
+	ft_strcpy((*command), value);
+	(*command)[ft_strlen(value)] = separator;
+	ft_strcat((*command), temp + i + 1);
+	(*command)[ft_strlen((*command))] = 0;
+	free(temp);
+	return (command);
+}
 
 void			alias_expansion(char **command)
 {
 	int		i;
 	char	*word;
 	char	*temp;
-	char	separator;
 	char	*value;
 
 	word = NULL;
@@ -28,18 +45,7 @@ void			alias_expansion(char **command)
 		|| !(*command)[i])
 		{
 			if ((value = get_env(word, g_shell->aliases)))
-			{
-				separator = (*command)[i];
-				(*command)[i] = '\0';
-				temp = *command;
-				*command = (char *)ft_memalloc(ft_strlen(value) + 1\
-				+ ft_strlen((*command) + i + 1) + 1);
-				ft_strcpy((*command), value);
-				(*command)[ft_strlen(value)] = separator;
-				ft_strcat((*command), temp + i + 1);
-				(*command)[ft_strlen((*command))] = 0;
-				free(temp);
-			}
+				command = alias_expansion_help(command, i, value);
 			break ;
 		}
 		temp = word;

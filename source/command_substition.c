@@ -6,11 +6,42 @@
 /*   By: akyrychu <akyrychu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 17:22:38 by obamzuro          #+#    #+#             */
-/*   Updated: 2019/10/31 01:15:41 by akyrychu         ###   ########.fr       */
+/*   Updated: 2019/10/31 03:18:55 by akyrychu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "forty_two_sh.h"
+
+static void		sub_help_two(int old_stdout, int fdpipe[], char arr[])
+{
+	parse_ast(g_shell->ast, g_shell, 1, NULL);
+	free_lexer(g_shell->lexer);
+	free_ast(g_shell->ast);
+	ft_bzero(g_shell->lexer, sizeof(t_lexer));
+	ft_bzero(arr, 10000);
+	read(fdpipe[0], arr, 10000 - 1);
+	dup2(old_stdout, STDOUT_FILENO);
+	close(fdpipe[0]);
+	close(old_stdout);
+}
+
+static int		sub_help(int old_stdout, int fdpipe[], char **command,\
+int *iter)
+{
+	char	*tmp;
+	char	*end;
+
+	end = ft_strchr((*command) + *iter + 2, ')');
+	free_lexer(g_shell->lexer);
+	dup2(old_stdout, STDOUT_FILENO);
+	close(fdpipe[0]);
+	close(old_stdout);
+	*((*command) + *iter) = '\0';
+	tmp = (*command);
+	(*command) = ft_strjoin((*command), end + 1);
+	free(tmp);
+	return (-2);
+}
 
 static int		substitute(char **command, int *iter)
 {
@@ -41,17 +72,7 @@ static int		substitute(char **command, int *iter)
 		return (-1);
 	}
 	if (!g_shell->lexer->tokens.len)
-	{
-		free_lexer(g_shell->lexer);
-		dup2(old_stdout, STDOUT_FILENO);
-		close(fdpipe[0]);
-		close(old_stdout);
-		*((*command) + *iter) = '\0';
-		tmp = (*command);
-		(*command) = ft_strjoin((*command), end + 1);
-		free(tmp);
-		return (-2);
-	}
+		return (sub_help(old_stdout, fdpipe, command, iter));
 	if (creating_ast(g_shell))
 	{
 		free_lexer(g_shell->lexer);
@@ -60,15 +81,7 @@ static int		substitute(char **command, int *iter)
 		close(old_stdout);
 		return (-1);
 	}
-	parse_ast(g_shell->ast, g_shell, 1, NULL);
-	free_lexer(g_shell->lexer);
-	free_ast(g_shell->ast);
-	ft_bzero(g_shell->lexer, sizeof(t_lexer));
-	ft_bzero(arr, sizeof(arr));
-	read(fdpipe[0], arr, sizeof(arr) - 1);
-	dup2(old_stdout, STDOUT_FILENO);
-	close(fdpipe[0]);
-	close(old_stdout);
+	sub_help_two(old_stdout, fdpipe, arr);
 	*((*command) + *iter) = '\0';
 	tmp = (*command);
 	(*command) = ft_strjoin((*command), arr);
